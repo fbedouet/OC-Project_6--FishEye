@@ -1,6 +1,12 @@
-# Base de code du projet P6 - Parcours Front-end
+#OC-Project_6: Creating an accessible web site.
 
-## Démarrer le projet
+#Project name: FishEye.
 
-Rien à installer ici, il suffit d'ouvrir le fichier `index.html`.
+#project objective: Creation of a website for freelance photographers to showcase their best work.
+
+#Github page: 
+
+--------------------------------------------------------------
+
+#19/01/2024# Cloning the supplied repository.
 
