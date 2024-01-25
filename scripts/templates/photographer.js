@@ -9,7 +9,7 @@ function photographerTemplate(data) {
         const img =`
                     <a href="/photographer.html?id=${id}" class="photographer">
                         <div class="profil">
-                            <img src=${picture}>
+                            <img src=${picture} class="profil_img" alt="">
                         </div>
                         <h2>${name}</h2>
                     </a>

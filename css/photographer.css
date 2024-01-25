@@ -3,9 +3,37 @@
 }
 
 .photograph-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     background-color: #FAFAFA;
+    padding: 0 50px;
     height: 300px;
     margin: 0 100px;
+}
+
+.name {
+    display: flex;
+    flex-direction: column;
+    gap: 27px;
+}
+
+.name h2 {
+    font-size: 64px;
+    color: #D3573C;
+    margin: 0;
+}
+
+.name h3 {
+    font-size: 24px;
+    color:#901C1C;
+    margin: 0;
+}
+
+.name p{
+    font-size: 18px;
+    color: #525252;
+    margin: 0;
 }
 
 .contact_button {

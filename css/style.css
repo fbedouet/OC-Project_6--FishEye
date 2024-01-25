@@ -91,7 +91,7 @@ h1 {
     overflow: hidden;
 }
 
-.photographer_section article img {
+.profil_img {/* .photographer_section article img { */
     height: 130%;
     width: 130%;
     object-fit: cover;
