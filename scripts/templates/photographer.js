@@ -1,7 +1,7 @@
 function photographerTemplate(data) {
+    const { id, name, portrait, tagline, price, city, country } = data
 
-    function getPhotographer() {    
-        const { id, name, portrait, tagline, price, city, country } = data
+    function cardIndexPage() {   
         const picture = `assets/photographers/Photographers_ID_Photos/${portrait}`
         const url= "/photographer.html"
         const article = document.createElement( 'article' );
@@ -20,11 +20,7 @@ function photographerTemplate(data) {
         return (article);
     }
 
-    function getPhotographerById(idKey){
-        const result = data.photographers.filter(elt => elt.id == idKey)
-        const {name, portrait, tagline, city, country, price } = result[0]
-        const section = document.createElement( 'section' )
-        section.classList.add("photograph-header")
+    function profilPhotographerPage(){
         const picture = `assets/photographers/Photographers_ID_Photos/${portrait}`
         const identity =`
                         <div class="name">
@@ -37,15 +33,14 @@ function photographerTemplate(data) {
                             <img src=${picture} class="profil_img">
                         </div>
         `
-        section.innerHTML = identity
-        return (section)
+        return identity
     }
+    return {cardIndexPage, profilPhotographerPage}
+}
 
-    function getPhotographerMedia(IdKey){
-        const result = data.media
-        const resultById = result.filter(elt => elt.photographerId == IdKey)
-        return resultById
-    }
-
-    return {getPhotographer, getPhotographerById, getPhotographerMedia}
+function cardMediaTemplate(mediaObj){
+    const article = document.createElement('article')
+    article.classList.add("thumbnail")
+    article.innerHTML = mediaObj.mediaHtml
+    return article
 }

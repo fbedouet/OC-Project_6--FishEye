@@ -2,16 +2,6 @@
     display: none;
 }
 
-.photograph-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #FAFAFA;
-    padding: 0 50px;
-    height: 300px;
-    margin: 0 100px;
-}
-
 .name {
     display: flex;
     flex-direction: column;
@@ -34,19 +24,6 @@
     font-size: 18px;
     color: #525252;
     margin: 0;
-}
-
-.contact_button {
-    font-size: 20px;
-    font-weight: bold;
-    color: white;
-    padding: 11px;
-    width: 170px;
-    height: 70px;
-    border: none;
-    background-color: #901C1C;
-    border-radius: 5px;
-    cursor: pointer;
 }
 
 .modal {
