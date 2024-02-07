@@ -1,0 +1,26 @@
+.profil{
+    height: 200px;
+    width: 200px;
+    border-radius: 100px;
+    overflow: hidden;
+}
+
+.profil_img {
+    height: 130%;
+    width: 130%;
+    object-fit: cover;
+    position: relative;
+    right: 30px;
+    bottom: 30px;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 90px;
+}
+
+.logo {
+    height: 50px;
+}

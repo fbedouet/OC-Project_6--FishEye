@@ -1,0 +1,50 @@
+@import url("common.css");
+@import url("style.css");
+
+h1 {
+    color: var(--darkRed);
+    margin-right: 100px;
+    font-size: var(--fontSize36);
+}
+
+.photographer_section {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 70px;
+    margin-top: 100px;
+}
+
+.photographer_section *{
+    margin: 0;
+}
+
+.photographer_section article {
+    justify-self: center;
+    text-align: center;
+}
+
+.photographer_section article a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+}
+
+.photographer_section article h3 {
+    color:var(--darkRed);
+    font-size: var(--fontSize13);
+}
+
+.photographer_section article h2 {
+    margin-top: 20px;
+    color: var(--salmonRed);
+    font-size: var(--fontSize36);
+}
+
+.photographer_section article .tagline{
+    font-size: var(--fontSize10);
+}
+.photographer_section article .price{
+    font-size: var(--fontSize9);
+    color: var(--grey);
+}

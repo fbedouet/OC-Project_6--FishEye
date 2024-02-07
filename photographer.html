@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <link href="css/style.css" rel="stylesheet" type="text/css" />
+    <link href="css/photographer.css" rel="stylesheet" type="text/css" />
     <script src="scripts/api/api.js" defer></script>
     <script src="scripts/templates/photographer.js" defer></script>
     <script src="scripts/models/media.js" defer></script>
@@ -23,8 +23,9 @@
     </header>
 
     <main id="main">
-      <section class="photograph-header">
+      <section class="photographHeader">
       </section>
+      
       <p class="dropbox_label">Trier par</p>
       <div id="dropbox">
         <a href="#" class="drop_button">Popularité <span class="fa-solid fa-chevron-down"></span> </a>
@@ -36,7 +37,7 @@
       
       <div class="stickyFooter">
         <div class="likesPrice">
-          <span> <p>297081</p> <i class="fa-solid fa-heart"></i> </span>
+          <span> <p id="photographerLikes"></p> <i class="heart blackHeart "></i> </span>
           <p>300€/jour</p>
         </div>
       </div>

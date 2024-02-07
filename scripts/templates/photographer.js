@@ -28,7 +28,7 @@ function photographerTemplate(data) {
                             <h3>${city}, ${country}</h3>
                             <p class="tagline">${tagline}</p>
                         </div>
-                        <button class="contact_button" onclick="displayModal()">Contactez-moi</button>
+                        <button class="contactButton" onclick="displayModal()">Contactez-moi</button>
                         <div class="profil">
                             <img src=${picture} class="profil_img">
                         </div>
@@ -38,9 +38,14 @@ function photographerTemplate(data) {
     return {cardIndexPage, profilPhotographerPage}
 }
 
-function cardMediaTemplate(mediaObj){
+function cardFolioTemplate(mediaObj){
     const article = document.createElement('article')
-    article.classList.add("thumbnail")
+    article.classList.add("fS__mediaCard")
+    article.id = mediaObj.mediaId
     article.innerHTML = mediaObj.mediaHtml
+    const divComment = document.createElement('div')
+    divComment.classList.add("fS__mediaCard-com")
+    divComment.innerHTML = mediaObj.commentsHtml
+    article.appendChild(divComment)
     return article
 }

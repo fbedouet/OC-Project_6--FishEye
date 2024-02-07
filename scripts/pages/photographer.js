@@ -6,34 +6,31 @@ function idRecover(){
 
 async function displayProfil(photographerData, htmlTag){
     const template = photographerTemplate(photographerData)
-   htmlTag.innerHTML = template.profilPhotographerPage()
+    htmlTag.innerHTML = template.profilPhotographerPage()
+}
+
+function displayPortfolio(photographerData, htmlTag){
+    const folioSection = document.createElement("section")
+    folioSection.classList.add("folioSection")
+    photographerData.forEach(elt => {
+        const callbackFactory=factoryPattern(elt)
+        const cardFolio= cardFolioTemplate(callbackFactory)
+        folioSection.appendChild(cardFolio)
+    });
+    htmlTag.appendChild(folioSection)
+    return folioSection
 }
 
 
-function factoryPattern(mediaData, htmlTag){
-    const pictureId = mediaData
-                        .filter((elt) => elt.image)
-                        .map((elt) => elt.id)
-
-    const movieId = mediaData
-                        .filter((elt) => elt.video)
-                        .map((elt) => elt.id)
-
-    mediaData.forEach((elt) => {
-        if(pictureId.find((idElt) => idElt === elt.id)){
-            const picture = new formatPicture(elt)
-            const CardDOM = cardMediaTemplate(picture)
-            htmlTag.appendChild(CardDOM)
-            return
-        }
-        if(movieId.find((idElt) => idElt === elt.id)){
-            const movie = new formatMovie(elt)
-            const CardDOM = cardMediaTemplate(movie)
-            htmlTag.appendChild(CardDOM)
-            return
-        }
-    })
-    return htmlTag
+function factoryPattern(mediaData){
+    if(mediaData.image){
+        const picture = new formatPicture(mediaData)
+        return picture 
+    }
+    if (mediaData.video){
+        const movie = new formatMovie(mediaData)
+        return movie 
+    }
 }
 
 function dropbox(){
@@ -77,24 +74,52 @@ for (let cpt=0; cpt<3; cpt++){
 }
 }
 
+function displayTotalLike(mediaData){
+    const photographerLikes = document.getElementById("photographerLikes")
+    const likes = mediaData.map(like=>like.likes)
+    let total = 0
+    likes.forEach(elt => {
+        total = total + elt
+    });
+    photographerLikes.innerText = String(total)
+}
+
+async function addOneLike (mediaData){
+    const addLike = document.querySelectorAll(".addLike")
+    for(let cpt=0; cpt<addLike.length; cpt++){
+        addLike[cpt].addEventListener("click",(event)=>{
+            let likeCounter = Number(event.target.parentElement.children[0].innerText)
+            likeCounter++
+            event.target.parentElement.children[0].innerText=String(likeCounter)
+            mediaId = event.target.parentElement.parentElement.parentElement.id
+            let cpt=mediaData.length
+            while (cpt>0) {
+                if( String( mediaData[cpt-1].id ) === mediaId ){
+                    mediaData[cpt-1].likes = likeCounter
+                }
+                cpt--
+            }
+            displayTotalLike(mediaData)
+        })
+    }
+}
+
 async function init(){
-    idKey=idRecover()
-    dropbox()
-    
     const photographers = await dataPhotographerApi()
+    idKey=idRecover()
     
     const photographer = photographers.getPhotographerById(idKey)
-    const photographerSection = document.querySelector(".photograph-header")
+    const photographerSection = document.querySelector(".photographHeader")
     displayProfil( photographer, photographerSection)
-
+    
     const mediaPhotographer = photographers.getPhotographerMedia(idKey)
-
-    const emptyFolioSection = document.createElement("section")
-    emptyFolioSection.classList.add("folio-section")
-    const  filledFolioSection = factoryPattern(mediaPhotographer, emptyFolioSection)
-
     const photographerMain = document.getElementById("main")
-    photographerMain.appendChild(filledFolioSection)
+    displayPortfolio( mediaPhotographer, photographerMain)   
+
+    displayTotalLike(mediaPhotographer)
+    addOneLike(mediaPhotographer)
+    
+    dropbox()
 }
 
 init()

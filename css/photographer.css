@@ -1,3 +1,112 @@
+@import url("common.css");
+@import url("style.css");
+
+.photographHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #FAFAFA;
+    padding: 0 50px;
+    height: 300px;
+}
+
+.contactButton {
+    font-size: 20px;
+    font-weight: bold;
+    color: white;
+    padding: 11px;
+    width: 170px;
+    height: 70px;
+    border: none;
+    background-color: #901C1C;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.folioSection {     /* alias: fS */
+    display:grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    justify-items: stretch;
+    justify-content: space-between;
+    column-gap: 95px;
+    row-gap: 20px;
+}
+
+.fS__mediaCard{
+    width: 100%;
+    height: 100%;
+    display: grid;
+    row-gap: 10px;
+}
+
+.fS__mediaCard-img {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+.fS__mediaCard-com {
+    width: 350px;
+    display: flex;
+    justify-content: space-between;
+    color: var(--darkRed);
+    font-size: var(--fontSize24);
+    font-weight: var(--regular);
+}
+
+.fS__mediaCard-com p{
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.fS__mediaCard-com span{
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-left: 13px;
+}
+
+.heart {
+    width: 21px;
+    height: 24px;
+    background: no-repeat url(/assets/icons/heart-solid.svg);
+}
+
+.blackHeart{
+    filter: brightness(0%);
+}
+
+.stickyFooter{
+    position: fixed;
+    top:100%;
+    bottom: 0;
+    right:0;
+    left: 100%;
+    margin-top: -68px;
+    margin-left: -400px;
+}
+
+.likesPrice {
+    width: 376px;
+    height: 68px;
+    background-color: var(--salmonRed);
+    border-radius: 5px 5px 0 0;
+    justify-content: space-around;
+    font-size: var(--fontSize24);
+    font-weight: 500;
+}
+
+.likesPrice >*,
+.likesPrice{
+    display: flex;
+    align-items: center;
+}
+.likesPrice span {
+    gap:5px;
+}
+
 #contact_modal {
     display: none;
 }
@@ -79,3 +188,59 @@ form input {
     border: none;
     border-radius: 5px;
 }
+
+/* DropBox design */
+.dropbox_label{
+    margin-top: 20px;
+    margin-bottom: 58px;
+    font-size: var(--fontSize18);
+    font-weight: var(--bold);
+}
+
+#dropbox {
+    position: absolute;
+    top: 310px;
+    right: 974px;
+    background-color: #911C1C;
+    width: 170px;
+    border-radius: 5px;
+  }
+  
+  .drop_choose{
+    display: grid;
+  }
+  
+  a {
+    display: flex;
+    align-items: center;
+    color:#FFFFFF;
+    font-weight: 700;
+    font-size: 18px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    text-decoration: none;
+    margin-left: 20px;
+  }
+  
+  .on{
+    border: #FFFFFF solid 1px;
+    width: 150px;
+    margin-left: 10px;
+  }
+  
+  .fa-solid{
+    margin-left: 10px;
+  }
+  
+  .drop_button {
+    height: 57px;
+  }
+  
+  .drop_open{
+    height: 57px;
+    overflow: visible;
+  }
+  
+  .drop_close{
+    height: 0;
+    overflow: hidden;
+  }

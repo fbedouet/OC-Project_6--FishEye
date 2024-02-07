@@ -7,16 +7,28 @@ class formatPicture {
         this._likes = mediaData.likes
         this._date = mediaData.date
         this._price = mediaData.price
+        this._totalLikes = 0
     }
     
     get mediaHtml(){
         const htmlElt = `
-        <img class="card-image"
-        src= "assets/photographers/${this._photographerId}/${this._image}">
-        <div class="card-title">
-        <p>${this._title}</p> <span class="likes"><p>${this._likes}</p><i class="fa-solid fa-heart"></i></span>
-        </div>`
+        <img class="fS__mediaCard-img"
+        src= "assets/photographers/${this._photographerId}/${this._image}">`
         return htmlElt
+    }
+
+    get commentsHtml(){
+        const htmlElt=`
+            <p>${this._title}</p>
+            <span>
+                <p>${this._likes}</p>
+                <i class="heart addLike"></i>
+            </span>`
+        return htmlElt
+    }
+
+    get mediaId(){
+        return this._id
     }
 }
 
@@ -33,12 +45,23 @@ class formatMovie {
     
     get mediaHtml(){
         const htmlElt = `
-        <video class="card-image"
+        <video class="fS__mediaCard-img"
              src= "assets/photographers/${this._photographerId}/${this._video}">
-        </video>
-        <div class="card-title">
-        <p>${this._title}</p> <span class="likes"><p>${this._likes}</p><i class="fa-solid fa-heart"></i></span>
-        </div>`
+        </video>`
         return htmlElt
+    }
+
+    get commentsHtml(){
+        const htmlElt=`
+        <p>${this._title}</p>
+        <span>
+            <p>${this._likes}</p>
+            <i class="heart addLike"></i>
+        </span>`
+        return htmlElt
+    }
+
+    get mediaId(){
+        return this._id
     }
 }
