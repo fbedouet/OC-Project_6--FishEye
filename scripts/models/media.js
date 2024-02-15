@@ -7,13 +7,11 @@ class formatPicture {
         this._likes = mediaData.likes
         this._date = mediaData.date
         this._price = mediaData.price
-        this._totalLikes = 0
     }
     
     get mediaHtml(){
         const htmlElt = `
-        <img class="fS__mediaCard-img"
-        src= "assets/photographers/${this._photographerId}/${this._image}">`
+        <img src= "assets/photographers/${this._photographerId}/${this._image}">`
         return htmlElt
     }
 
@@ -30,6 +28,10 @@ class formatPicture {
     get mediaId(){
         return this._id
     }
+
+    get mediaTitle(){
+        return this._title
+    }
 }
 
 class formatMovie {
@@ -41,14 +43,21 @@ class formatMovie {
         this._likes = mediaData.likes
         this._date = mediaData.date
         this._price = mediaData.price
+        this._controls = " "
     }
     
     get mediaHtml(){
         const htmlElt = `
-        <video class="fS__mediaCard-img"
+        <video ${this._controls}
              src= "assets/photographers/${this._photographerId}/${this._video}">
         </video>`
         return htmlElt
+    }
+
+    set controls (display=false) {
+        if (display){
+            this._controls = "controls"
+        }
     }
 
     get commentsHtml(){
@@ -63,5 +72,9 @@ class formatMovie {
 
     get mediaId(){
         return this._id
+    }
+
+    get mediaTitle(){
+        return this._title
     }
 }

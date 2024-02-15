@@ -43,9 +43,21 @@ function cardFolioTemplate(mediaObj){
     article.classList.add("fS__mediaCard")
     article.id = mediaObj.mediaId
     article.innerHTML = mediaObj.mediaHtml
+    article.children[0].classList.add("fS__mediaCard-img")
     const divComment = document.createElement('div')
     divComment.classList.add("fS__mediaCard-com")
     divComment.innerHTML = mediaObj.commentsHtml
     article.appendChild(divComment)
     return article
+}
+
+function mediaInCarouselTemplate(mediaObj){
+    const carousel = document.querySelector(".dMM__mediaContents")
+    mediaObj.controls = true
+    carousel.id = mediaObj.mediaId
+    carousel.innerHTML = mediaObj.mediaHtml
+    const title = document.createElement('p')
+    title.innerText = mediaObj.mediaTitle
+    title.classList.add("dMM__mediaContents-title")
+    carousel.appendChild(title)
 }

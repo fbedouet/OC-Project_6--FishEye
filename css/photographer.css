@@ -1,5 +1,6 @@
 @import url("common.css");
 @import url("style.css");
+@import url("modal.css");
 
 .photographHeader {
     display: flex;
@@ -39,7 +40,8 @@
     row-gap: 10px;
 }
 
-.fS__mediaCard-img {
+.fS__mediaCard-img{
+    cursor: pointer;
     width: 100%;
     height: 300px;
     object-fit: cover;
@@ -69,6 +71,7 @@
 }
 
 .heart {
+    cursor: pointer;
     width: 21px;
     height: 24px;
     background: no-repeat url(/assets/icons/heart-solid.svg);
