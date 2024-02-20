@@ -28,11 +28,11 @@
       
       <p class="dropbox_label">Trier par</p>
       <div id="dropbox">
-        <a href="#" class="drop_button">Popularité <span class="fa-solid fa-chevron-down"></span> </a>
+        <a href="#" class="drop_button">Titre <span class="fa-solid fa-chevron-down"></span> </a>
         <div></div>
         <a href="#" class="drop_close">Date</a>
         <div></div>
-        <a  href="#" class="drop_close">Titre</a>
+        <a  href="#" class="drop_close">Popularité</a>
       </div>
       
       <div class="stickyFooter">
@@ -44,40 +44,55 @@
 
     </main>
 
-    <!-- <modal> "Contactez-moi" -->
-    <div id="contact_modal">
-			<div class="modal">
-				<header>
-          <h2>Contactez-moi</h2>
-          <img src="assets/icons/close.svg" onclick="closeModal()" />
-        </header>
-				<form>
-					<div>
-						<label>Prénom</label>
-						<input />
-					</div>
-          <button class="contact_button">Envoyer</button>
-				</form>
-			</div>
-		</div>
+    <div id="contactLayout">
+      <div class="contact_modal">
+        <div class="modal">
+          <header>
+            <h2>Contactez-moi</h2>
+            <img src="assets/icons/close.svg" onclick="closeModal()" />
+          </header>
 
-    <!-- </modal> -->
+          <form>
+              <label>Prénom</label>
+              <input />
+
+              <label>Nom</label>
+              <input />
+
+              <label>Email</label>
+              <input />
+
+              <label>Votre message</label>
+              <input />
+            <button class="contact_button">Envoyer</button>
+          </form>
+
+        </div>
+      </div>
+    </div>
+
     <div class="carouselLayout">
       <div class="displayMediaModal"> <!--Alias dMM-->
         <section id="dMM__carousel">
 
             <div class="dMM__controls">
-                <img src="/assets/icons/chevron-left-solid.svg" alt="" id="previousMedia">
+                <img class="dMM_controls-cdes" src="/assets/icons/chevron-left-solid.svg" alt="" id="previousMedia">
             </div>
             
             <div class="dMM__media">
-                <div class="dMM__mediaContents"></div>
+              <div class="dMM__mediaContents"> <!--"modal__media-contents"-->
+                <div class="dMM__mediaContents-img">
+                    <!-- <img src="/Event_18thAnniversary.jpg"> -->
+                </div>
+                <p class="dMM__mediaContents-title"></p>
+              </div>
             </div>
             
             <div class="dMM__controls">
                 <img class="dMM_controls-close" src="/assets/icons/xmark-solid.svg" onclick="closeCarouselModal()">
-                <img src="/assets/icons/chevron-right-solid.svg" alt="" id="nextMedia">
+                <img class="dMM_controls-cdes" src="/assets/icons/chevron-right-solid.svg" alt="" id="nextMedia">
             </div>
+            
         </section>
       </div>
     </div>

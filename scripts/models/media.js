@@ -15,18 +15,22 @@ class formatPicture {
         return htmlElt
     }
 
-    get commentsHtml(){
-        const htmlElt=`
-            <p>${this._title}</p>
-            <span>
-                <p>${this._likes}</p>
-                <i class="heart addLike"></i>
-            </span>`
-        return htmlElt
-    }
+    // get commentsHtml(){
+    //     const htmlElt=`
+    //         <p>${this._title}</p>
+    //         <span>
+    //             <p>${this._likes}</p>
+    //             <i class="heart addLike"></i>
+    //         </span>`
+    //     return htmlElt
+    // }
 
     get mediaId(){
         return this._id
+    }
+
+    get Likes() {
+        return this._likes
     }
 
     get mediaTitle(){
@@ -43,12 +47,12 @@ class formatMovie {
         this._likes = mediaData.likes
         this._date = mediaData.date
         this._price = mediaData.price
-        this._controls = " "
+        this._hasControls = false
     }
     
     get mediaHtml(){
         const htmlElt = `
-        <video ${this._controls}
+        <video ${this._hasControls ? 'controls' : ''}
              src= "assets/photographers/${this._photographerId}/${this._video}">
         </video>`
         return htmlElt
@@ -56,18 +60,22 @@ class formatMovie {
 
     set controls (display=false) {
         if (display){
-            this._controls = "controls"
+            this._hasControls = true
         }
     }
 
-    get commentsHtml(){
-        const htmlElt=`
-        <p>${this._title}</p>
-        <span>
-            <p>${this._likes}</p>
-            <i class="heart addLike"></i>
-        </span>`
-        return htmlElt
+    // get commentsHtml(){
+    //     const htmlElt=`
+    //     <p>${this._title}</p>
+    //     <span>
+    //         <p>${this._likes}</p>
+    //         <i class="heart addLike"></i>
+    //     </span>`
+    //     return htmlElt
+    // }
+
+    get Likes() {
+        return this._likes
     }
 
     get mediaId(){

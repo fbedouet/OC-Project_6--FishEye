@@ -46,13 +46,18 @@ function cardFolioTemplate(mediaObj){
     article.children[0].classList.add("fS__mediaCard-img")
     const divComment = document.createElement('div')
     divComment.classList.add("fS__mediaCard-com")
-    divComment.innerHTML = mediaObj.commentsHtml
+    divComment.innerHTML = `
+                            <p>${mediaObj.mediaTitle}</p>
+                            <span>
+                                <p>${mediaObj.Likes}</p>
+                                <i class="heart addLike"></i>
+                            </span>`
     article.appendChild(divComment)
     return article
 }
 
 function mediaInCarouselTemplate(mediaObj){
-    const carousel = document.querySelector(".dMM__mediaContents")
+    const carousel = document.querySelector(".dMM__mediaContents-img")
     mediaObj.controls = true
     carousel.id = mediaObj.mediaId
     carousel.innerHTML = mediaObj.mediaHtml

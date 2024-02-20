@@ -6,68 +6,95 @@
     right: 0;
     left: 0;
     z-index: 1000;
+    background-color: rgba(196,196,196,0.4);
+    align-items: center;
+    justify-content: center;
 }
 
-.displayMediaModal{
-    background-color: rgba(196,196,196,0.4);
-    height: 100vh;
+.displayMediaModal{         /*alias dMM*/
+    display: flex;
+    justify-content: center;
     width: 100%;
-    padding-top: 4vh;
 }
 
 #dMM__carousel{
     display: flex;
-    height:90vh;
-    width: 1240px;
-    margin: auto;
+    justify-content: center;
+    background-color: rgb(238, 238, 238);
+}
+
+.dMM__mediaContents-img{
+    height: 90vh;
+    width: auto;
+    padding-top: 20px;
+}
+
+.dMM__mediaContents-img img{
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    border-radius: 10px;
 }
 
 .dMM__mediaContents-title{
-    position: absolute;
-    bottom: -30px;
-    display: flex;
-    align-items: center;
-    height: 30px;
-    font-size: 20px;
-    margin: 0;
-}
-
-.dMM__media{
-    display: flex;
-    width: 100%;
-    height: 100%;
-}
-
-.dMM__mediaContents {
-    display: flex;
-    position: relative;
-    margin: auto;
-    height: 100%;
-}
-
-.dMM__mediaContents img,
-.dMM__mediaContents video {
-    max-width: 100%;
-    max-height: 100%;
-    border-radius: 10px ;
+    height: 20px;
+    padding-bottom: 16px;
 }
 
 .dMM__controls{
-    position: relative;
-    width: 48px;
-    height: 95%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    display: grid;
+    grid-template-rows: 1fr 1fr 20px;
+    grid-template-areas: "close" "cdes" "txtWidth";
+    align-items: start;
 }
+ .dMM_controls-cdes{
+    cursor: pointer;
+    margin-top: -48px;
+    grid-area: cdes;
+ }
+
+ .dMM_controls-close{
+    cursor: pointer;
+    margin-top: 20px;
+ }
 
 .dMM__controls img{
-    cursor: pointer;
     height: 48px;
     width: auto;
 }
 
-.dMM_controls-close {
-    position: absolute;
-    top:10px;
+#contactLayout{
+    display: none;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    z-index: 1000;
+    background-color: rgba(196,196,196,0.4);
 }
+
+.contact_modal{
+    display: flex;
+    justify-content: center;
+}
+
+.modal{
+    background-color: #D3573C;
+    height:800px;
+    width: 669px;
+    border-radius: 5px;
+    margin-top: 5px;
+    padding:0 35px;
+}
+
+header{
+    width: 100%;
+}
+
+form{
+    display: grid;
+}
+
+
+
