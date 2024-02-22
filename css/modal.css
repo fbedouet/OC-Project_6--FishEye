@@ -21,6 +21,7 @@
     display: flex;
     justify-content: center;
     background-color: rgb(238, 238, 238);
+    border-radius: 5px;
 }
 
 .dMM__mediaContents-img{
@@ -38,6 +39,8 @@
 
 .dMM__mediaContents-title{
     height: 20px;
+    font-size: 24px;
+    color:#901C1C;
     padding-bottom: 16px;
 }
 
@@ -46,6 +49,8 @@
     grid-template-rows: 1fr 1fr 20px;
     grid-template-areas: "close" "cdes" "txtWidth";
     align-items: start;
+    justify-content: center;
+    width: 100px;
 }
  .dMM_controls-cdes{
     cursor: pointer;
@@ -81,20 +86,53 @@
 
 .modal{
     background-color: #D3573C;
-    height:800px;
+    height:900px;
     width: 669px;
     border-radius: 5px;
     margin-top: 5px;
     padding:0 35px;
 }
 
-header{
+.modal h2,
+#contactPhotographer {
+    font-size: 64px;
+    font-weight: var(--regular);
+}
+
+.modal header{
     width: 100%;
 }
 
-form{
-    display: grid;
+.modal header img{
+    cursor: pointer;
 }
+
+#contactForm{
+    display: grid;
+    margin-top: 20px;
+}
+
+.cF__input{
+    border: 0;
+    height: 68px;
+    border-radius: 5px;
+}
+
+.cF__input--label{
+    margin: 5px 0;
+}
+
+.cF__input--area{
+    height: 170px;
+    margin-bottom: 25px;
+}
+
+#contactForm label{
+    color: #312E2E;
+    font-size: 36px;
+}
+
+
 
 
 

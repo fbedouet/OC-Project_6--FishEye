@@ -38,12 +38,18 @@ function factoryPattern(mediaData){
     }
 }
 
+const openModal = (mediaById, sortedIds, mediaId) => {
+    const sortedMedias = sortedIds.map((id) => mediaById[id])
+
+    // Fonction qui ouvre la modale en affichant l'élément courant (mediaId) et qui attache les listeners sur les flèches pour naviguer dans la modale
+}
+
 function dropbox(mediaById){
     const mediaInCarousel = document.querySelector(".dMM__mediaContents-img")
     
     const dropbox = document.querySelectorAll('#dropbox a')
     const splitter = document.querySelectorAll('#dropbox div')
-    const arrow = document.querySelector(".fa-solid")
+
     const MEDIA_SORTED = sortBy(mediaById)
 
     const previousIcon = document.getElementById("previousMedia")
@@ -53,7 +59,7 @@ function dropbox(mediaById){
     
     for (let cpt=0; cpt<3; cpt++){
         dropbox[cpt].addEventListener("click", (event)=>{
-
+            const arrow = document.querySelector(".fa-solid")
             if (dropbox[1].className==="drop_close"){
                 for (let index = 1; index < dropbox.length; index++) {
                     dropbox[index].classList.add('drop_open')
@@ -61,9 +67,14 @@ function dropbox(mediaById){
                     
                     splitter[index-1].classList.add('on')
 
-                    arrow.classList.remove('fa-chevron-down')
-                    arrow.classList.add('fa-chevron-up')
                 }
+
+                arrow.classList[1] === 'fa-chevron-down' 
+                ?(
+                    arrow.classList.remove('fa-chevron-down'),
+                    arrow.classList.add('fa-chevron-up')
+                                 )
+                :null
                 return
             }
 
@@ -73,11 +84,8 @@ function dropbox(mediaById){
                     dropbox[index].classList.remove('drop_open')
                     
                     splitter[index-1].classList.remove('on')
-
-                    arrow.classList.remove('fa-chevron-up')
-                    arrow.classList.add('fa-chevron-down')
-                    
                 }
+                
                 const outchoose = event.target.innerText
                 event.target.innerText = dropbox[0].innerText
                 dropbox[0].innerHTML = outchoose + "<span class=\"fa-solid fa-chevron-down\"></span>"
@@ -96,7 +104,7 @@ function dropbox(mediaById){
                 idSorted = mediaSorted.map(elt=>String(elt.id))
                 displayPortfolio( mediaSorted) 
                 displayMediaInModal(mediaById)
-                addOneLike (mediaById)
+                addOnlyOneLike (mediaById)
                 return
             }
         })
@@ -138,19 +146,23 @@ function dropbox(mediaById){
 function displayTotalLike(mediaById){
     const photographerLikes = document.getElementById("photographerLikes")
     const total = Object.values(mediaById).reduce((sum,  {likes} ) => sum + likes, 0)
-
     photographerLikes.innerText = String(total)
 }
 
-async function addOneLike (mediaById){
+async function addOnlyOneLike (mediaById){
     const addLike = document.querySelectorAll(".addLike")
-    console.log(addLike)
     for(let cpt=0; cpt<addLike.length; cpt++){
         addLike[cpt].addEventListener("click",(event)=>{
             const mediaId = event.target.parentElement.parentElement.parentElement.id
-            const likes = mediaById[mediaId].likes + 1
-            mediaById[mediaId].likes = likes
-            event.target.parentElement.children[0].innerText = String(likes)
+
+            if (mediaById[mediaId].liked) {
+                return
+            }
+
+            mediaById[mediaId].likes++
+            mediaById[mediaId].liked=true
+
+            event.target.parentElement.children[0].innerText = String(mediaById[mediaId].likes)
 
             displayTotalLike(mediaById)
         })
@@ -163,6 +175,13 @@ function displayMediaInModal (mediaById) {
     
     for(let cpt=0; cpt<mediaToShow.length; cpt++){
         mediaToShow[cpt].addEventListener("click",(event)=>{
+            // openModal(mediaById, sortedIds, event.target.parentElement.id)
+
+
+
+
+
+
             const mediaId = event.target.parentElement.id
             const callbackFactory = factoryPattern(mediaById[mediaId])
             mediaInCarouselTemplate(callbackFactory)
@@ -216,16 +235,44 @@ async function init(){
     displayProfil( photographer, photographerSection)
     
     const mediaPhotographer = photographers.getPhotographerMedia(idKey)
-
+    
     const mediaById = mediaPhotographer.reduce((acc, media) => {
+        media["liked"]=false
         acc[media.id] = media
-
+        
         return acc
     }, {}) 
-
+    
     dropbox(mediaById)
     displayTotalLike(mediaById)
-    addOneLike (mediaById)
+    addOnlyOneLike (mediaById)
+
+    //Modal Contact
+            const contactTitle = document.getElementById("contactPhotographer")
+            contactTitle.innerText=photographer.name
+
+            const layout = document.querySelector(".contact_modal")
+            layout.addEventListener("click",(event)=>{
+                event.target.className === "contact_modal" ? closeModal() : null
+            })
+            
+            const contactForm = document.getElementById("contactForm")
+            
+            
+            const form = document.querySelectorAll(".cF__input")
+            form.forEach(elt=>{
+                elt.value = ""
+            })
+
+            contactForm.addEventListener("submit",(event)=>{
+                event.preventDefault()
+                const formData = new ContactForm(form)
+                const inputHandlers = formData.inputEntries
+                console.log(inputHandlers)
+                form.forEach(elt=>{
+                    elt.value = ""
+                })
+            })
 }
 
 init()

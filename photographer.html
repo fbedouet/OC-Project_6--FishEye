@@ -48,23 +48,48 @@
       <div class="contact_modal">
         <div class="modal">
           <header>
-            <h2>Contactez-moi</h2>
+            <h2>Contacter-moi</h2>
             <img src="assets/icons/close.svg" onclick="closeModal()" />
           </header>
+          <h3 id="contactPhotographer"></h3>
+          
+          <form id="contactForm"
+                name="contact"
+                action=""
+                method="get"
+                onsubmit=""
+                novalidate
+          >
+              <label for="firstName">Prénom</label>
+              <input class="cF__input"
+                     type="text"
+                     id="firstName"
+                     name="firstName"
+              />
 
-          <form>
-              <label>Prénom</label>
-              <input />
+              <label for="lastName">Nom</label>
+              <input class="cF__input"
+                     type="text"
+                     id="lastName"
+                     name="lastName"
+              />
 
-              <label>Nom</label>
-              <input />
+              <label for="email">Email</label>
+              <input class="cF__input"
+                     type="email"
+                     id="email"
+                     name="email"
+              />
 
-              <label>Email</label>
-              <input />
-
-              <label>Votre message</label>
-              <input />
-            <button class="contact_button">Envoyer</button>
+              <label for="message" class="cF__input--label">Votre message</label>
+              <textarea class="cF__input cF__input--area"
+                        id="message"
+                        name="message"
+              >
+              </textarea>
+            <div>
+              <button class="contactButton">Envoyer</button>
+            </div>
           </form>
 
         </div>

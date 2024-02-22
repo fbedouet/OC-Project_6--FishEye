@@ -15,16 +15,6 @@ class formatPicture {
         return htmlElt
     }
 
-    // get commentsHtml(){
-    //     const htmlElt=`
-    //         <p>${this._title}</p>
-    //         <span>
-    //             <p>${this._likes}</p>
-    //             <i class="heart addLike"></i>
-    //         </span>`
-    //     return htmlElt
-    // }
-
     get mediaId(){
         return this._id
     }
@@ -64,16 +54,6 @@ class formatMovie {
         }
     }
 
-    // get commentsHtml(){
-    //     const htmlElt=`
-    //     <p>${this._title}</p>
-    //     <span>
-    //         <p>${this._likes}</p>
-    //         <i class="heart addLike"></i>
-    //     </span>`
-    //     return htmlElt
-    // }
-
     get Likes() {
         return this._likes
     }
@@ -84,5 +64,23 @@ class formatMovie {
 
     get mediaTitle(){
         return this._title
+    }
+}
+
+class ContactForm {
+    constructor(form){
+        this._first = form[0].value
+        this._last = form[1].value
+        this._email = form[2].value
+        this._message = form[3].value
+    }
+
+    get inputEntries(){
+        return {
+            first: this._first,
+            last: this._last,
+            email: this._email,
+            message: this._message
+        }
     }
 }
