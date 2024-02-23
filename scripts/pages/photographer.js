@@ -9,7 +9,8 @@ async function displayProfil(photographerData, htmlTag){
     htmlTag.innerHTML = template.profilPhotographerPage()
 }
 
-function displayPortfolio(mediaById){
+function displayPortfolio(mediaById, sortedIds){
+    const sortedMedias = sortedIds.map((id) => mediaById[id])
     const photographerMain = document.getElementById("main")
     const folioSectionPresence = document.querySelector(".folioSection")
     if(folioSectionPresence){
@@ -18,14 +19,14 @@ function displayPortfolio(mediaById){
     const folioSection = document.createElement("section")
     folioSection.classList.add("folioSection")
  
-    mediaById.forEach(elt => {
+    sortedMedias.forEach(elt => {
         const callbackFactory=factoryPattern(elt)
         const cardFolio= cardFolioTemplate(callbackFactory)
         folioSection.appendChild(cardFolio)
     });
     photographerMain .appendChild(folioSection)
+    addOnlyOneLike (mediaById)
 }
-
 
 function factoryPattern(mediaData){
     if(mediaData.image){
@@ -38,24 +39,11 @@ function factoryPattern(mediaData){
     }
 }
 
-const openModal = (mediaById, sortedIds, mediaId) => {
-    const sortedMedias = sortedIds.map((id) => mediaById[id])
-
-    // Fonction qui ouvre la modale en affichant l'élément courant (mediaId) et qui attache les listeners sur les flèches pour naviguer dans la modale
-}
-
 function dropbox(mediaById){
-    const mediaInCarousel = document.querySelector(".dMM__mediaContents-img")
-    
     const dropbox = document.querySelectorAll('#dropbox a')
     const splitter = document.querySelectorAll('#dropbox div')
-
     const MEDIA_SORTED = sortBy(mediaById)
-
-    const previousIcon = document.getElementById("previousMedia")
-    const nextIcon = document.getElementById("nextMedia")
     let mediaSorted
-    let idSorted
     
     for (let cpt=0; cpt<3; cpt++){
         dropbox[cpt].addEventListener("click", (event)=>{
@@ -101,47 +89,44 @@ function dropbox(mediaById){
                         mediaSorted=MEDIA_SORTED.byTitle()
                         break;
                 }
-                idSorted = mediaSorted.map(elt=>String(elt.id))
-                displayPortfolio( mediaSorted) 
-                displayMediaInModal(mediaById)
-                addOnlyOneLike (mediaById)
+                displayPortfolio( mediaById, mediaSorted) 
+                displayMediaInModal(mediaById, mediaSorted)
                 return
             }
         })
     }
     mediaSorted = MEDIA_SORTED.byTitle()
-    idSorted = mediaSorted.map(elt=>String(elt.id))
-    displayPortfolio(mediaSorted )
-    displayMediaInModal(mediaById)
-
-    const layout = document.querySelector(".displayMediaModal")
-    layout.addEventListener("click",(event)=>{
-        event.target.className === "displayMediaModal" ? closeCarouselModal() : null
-    })
-
-    previousIcon.addEventListener("click",()=>{
-        const mediaId = mediaInCarousel.id
-        let indexPreviousMedia = idSorted.indexOf(mediaId)-1
-        if (indexPreviousMedia<0){
-            indexPreviousMedia=idSorted.length-1
-        }
-        const idOfPreviousMedia = idSorted[indexPreviousMedia]
-        const callbackFactory=factoryPattern(mediaById[idOfPreviousMedia])
-        mediaInCarouselTemplate(callbackFactory)
-    })
-
-    nextIcon.addEventListener("click",()=>{
-        const mediaId = mediaInCarousel.id
-        let indexNextMedia = idSorted.indexOf(mediaId)+1
-        if (indexNextMedia>idSorted.length-1){
-            indexNextMedia=0
-        }
-        const idOfNextMedia = idSorted[indexNextMedia]
-        const callbackFactory=factoryPattern(mediaById[idOfNextMedia])
-        mediaInCarouselTemplate(callbackFactory)
-    })
+    displayPortfolio( mediaById, mediaSorted) 
+    displayMediaInModal(mediaById, mediaSorted)
 }
 
+function sortBy(mediaById){
+    
+    const data = Object.values(mediaById)
+
+    function byDate(){
+        sortedData = data.sort((a,b)=>{ 
+            return new Date(a.date).getTime() - new Date(b.date).getTime()
+        })
+        return sortedData.map(media=>media.id)
+    }
+
+    function byPopularity(){
+        sortedData = data.sort( (a,b)=>{ 
+            return a.likes - b.likes
+        })
+        return sortedData.map(media=>media.id)
+    }
+
+    function byTitle(){
+        sortedData = data.sort( (a,b)=>{ 
+            return a.title.localeCompare(b.title)
+        })
+        return sortedData.map(media=>media.id)
+    }
+
+    return {byDate, byPopularity, byTitle}
+}
 
 function displayTotalLike(mediaById){
     const photographerLikes = document.getElementById("photographerLikes")
@@ -154,7 +139,6 @@ async function addOnlyOneLike (mediaById){
     for(let cpt=0; cpt<addLike.length; cpt++){
         addLike[cpt].addEventListener("click",(event)=>{
             const mediaId = event.target.parentElement.parentElement.parentElement.id
-
             if (mediaById[mediaId].liked) {
                 return
             }
@@ -169,23 +153,59 @@ async function addOnlyOneLike (mediaById){
     }
 }
 
-function displayMediaInModal (mediaById) {
-    const mediaToShow = document.querySelectorAll(".fS__mediaCard-img")
+const openModal = (mediaById, sortedIds, mediaId) => {
     const carouselModal = document.querySelector(".carouselLayout")
-    
+    const sortedMedias = sortedIds.map((id) => mediaById[id])
+    const idSorted = sortedMedias.map(elt=>String(elt.id))
+    const callbackFactory = factoryPattern(mediaById[mediaId])
+    mediaInCarouselTemplate(callbackFactory)
+    carouselModal.style.display="flex"
+
+    const mediaInCarousel = document.querySelector(".dMM__mediaContents-img")
+
+    const previousIcon = document.getElementById("previousMedia")
+    const previousmedia = ()=>{
+        const mediaId = mediaInCarousel.id
+        let indexPreviousMedia = idSorted.indexOf(mediaId)-1
+        if (indexPreviousMedia<0){
+            indexPreviousMedia=idSorted.length-1
+        }
+        const idOfPreviousMedia = idSorted[indexPreviousMedia]
+        const callbackFactory=factoryPattern(mediaById[idOfPreviousMedia])
+        mediaInCarouselTemplate(callbackFactory)
+    }
+    previousIcon.addEventListener("click",previousmedia)
+
+    const nextIcon = document.getElementById("nextMedia")
+    const nextMedia = ()=>{
+        // previousIcon.removeEventListener("click",previousmedia)
+        const mediaId = mediaInCarousel.id
+        let indexNextMedia = idSorted.indexOf(mediaId)+1
+        if (indexNextMedia>idSorted.length-1){
+            indexNextMedia=0
+        }
+        const idOfNextMedia = idSorted[indexNextMedia]
+        const callbackFactory=factoryPattern(mediaById[idOfNextMedia])
+        mediaInCarouselTemplate(callbackFactory)
+    }
+    nextIcon.addEventListener("click",nextMedia)
+
+    const layout = document.querySelector(".displayMediaModal")
+    layout.addEventListener("click",(event)=>{
+        if(event.target.className === "displayMediaModal" || event.target.className === "dMM_controls-close"){
+            closeCarouselModal()
+            nextIcon.removeEventListener("click",nextMedia)
+            previousIcon.removeEventListener("click",previousmedia)
+        }
+    })
+
+ }
+
+function displayMediaInModal (mediaById, mediaSorted) {
+    const mediaToShow = document.querySelectorAll(".fS__mediaCard-img")
     for(let cpt=0; cpt<mediaToShow.length; cpt++){
         mediaToShow[cpt].addEventListener("click",(event)=>{
-            // openModal(mediaById, sortedIds, event.target.parentElement.id)
-
-
-
-
-
-
-            const mediaId = event.target.parentElement.id
-            const callbackFactory = factoryPattern(mediaById[mediaId])
-            mediaInCarouselTemplate(callbackFactory)
-            carouselModal.style.display="flex"
+            openModal(mediaById, mediaSorted, event.target.parentElement.id)
         })
     }
 }
@@ -193,37 +213,6 @@ function displayMediaInModal (mediaById) {
 function closeCarouselModal(){
     const carouselModal = document.querySelector(".carouselLayout")
     carouselModal.style.display="none"
-}
-
-function sortBy(mediaById){
-    
-    const data = Object.values(mediaById)
-
-    function byDate(){
-        data.sort((a,b)=>{ 
-            return new Date(a.date).getTime() - new Date(b.date).getTime()
-            // return a.date.localeCompare(b.date)
-        })
-        return data
-    }
-
-    function byPopularity(){
-        data.sort( (a,b)=>{ 
-            return a.likes - b.likes
-        })
-        return data
-    }
-
-    function byTitle(){
-        data.sort( (a,b)=>{ 
-            return a.title.localeCompare(b.title)
-        })
-        return data
-    }
-
-    
-
-    return {byDate, byPopularity, byTitle}
 }
 
 async function init(){
@@ -245,7 +234,6 @@ async function init(){
     
     dropbox(mediaById)
     displayTotalLike(mediaById)
-    addOnlyOneLike (mediaById)
 
     //Modal Contact
             const contactTitle = document.getElementById("contactPhotographer")
