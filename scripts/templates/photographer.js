@@ -50,7 +50,7 @@ function cardFolioTemplate(mediaObj){
                             <p>${mediaObj.mediaTitle}</p>
                             <span>
                                 <p>${mediaObj.Likes}</p>
-                                <i class="heart addLike"></i>
+                                <i class="heart addLike" tabindex="0"></i>
                             </span>`
     article.appendChild(divComment)
     return article

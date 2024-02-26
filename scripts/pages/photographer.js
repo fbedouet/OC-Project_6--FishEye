@@ -136,21 +136,25 @@ function displayTotalLike(mediaById){
 
 async function addOnlyOneLike (mediaById){
     const addLike = document.querySelectorAll(".addLike")
-    for(let cpt=0; cpt<addLike.length; cpt++){
-        addLike[cpt].addEventListener("click",(event)=>{
-            const mediaId = event.target.parentElement.parentElement.parentElement.id
-            if (mediaById[mediaId].liked) {
-                return
-            }
+    const likeIt = (event)=>{
+        const mediaId = event.target.parentElement.parentElement.parentElement.id
+        if (mediaById[mediaId].liked ||event.key != 'Enter') {
+            return
+        }
 
-            mediaById[mediaId].likes++
-            mediaById[mediaId].liked=true
+        mediaById[mediaId].likes++
+        mediaById[mediaId].liked=true
 
-            event.target.parentElement.children[0].innerText = String(mediaById[mediaId].likes)
+        event.target.parentElement.children[0].innerText = String(mediaById[mediaId].likes)
 
-            displayTotalLike(mediaById)
-        })
+        displayTotalLike(mediaById)
     }
+
+    for(let cpt=0; cpt<addLike.length; cpt++){
+        addLike[cpt].addEventListener("click",likeIt)
+        addLike[cpt].addEventListener("keydown",likeIt)
+    }
+
 }
 
 const openModal = (mediaById, sortedIds, mediaId) => {
@@ -178,7 +182,6 @@ const openModal = (mediaById, sortedIds, mediaId) => {
 
     const nextIcon = document.getElementById("nextMedia")
     const nextMedia = ()=>{
-        // previousIcon.removeEventListener("click",previousmedia)
         const mediaId = mediaInCarousel.id
         let indexNextMedia = idSorted.indexOf(mediaId)+1
         if (indexNextMedia>idSorted.length-1){
@@ -191,22 +194,51 @@ const openModal = (mediaById, sortedIds, mediaId) => {
     nextIcon.addEventListener("click",nextMedia)
 
     const layout = document.querySelector(".displayMediaModal")
-    layout.addEventListener("click",(event)=>{
-        if(event.target.className === "displayMediaModal" || event.target.className === "dMM_controls-close"){
+    const closeModal = (event)=>{
+        if(event.target.className === "displayMediaModal" || event.target.className === "dMM_controls-close" || event.key==="Escape"){
             closeCarouselModal()
             nextIcon.removeEventListener("click",nextMedia)
             previousIcon.removeEventListener("click",previousmedia)
+            document.removeEventListener('keydown',keypressedHandler)
         }
-    })
+    }
+    layout.addEventListener("click",closeModal)
 
- }
+    const keypressedHandler = (event)=>{
+        switch (event.key){
+            case 'ArrowLeft':
+                previousmedia()
+                break
+            case 'ArrowRight':
+                nextMedia()
+                break
+            case 'Escape':
+                closeModal(event)
+                break
+            default:
+                return
+        }
+    }
+    document.addEventListener('keydown',keypressedHandler)
+}
 
 function displayMediaInModal (mediaById, mediaSorted) {
     const mediaToShow = document.querySelectorAll(".fS__mediaCard-img")
+    const imgToShow = document.querySelectorAll(".fS__mediaCard-img")
+
     for(let cpt=0; cpt<mediaToShow.length; cpt++){
         mediaToShow[cpt].addEventListener("click",(event)=>{
             openModal(mediaById, mediaSorted, event.target.parentElement.id)
         })
+    }
+
+    for (let cpt=0; cpt <imgToShow.length;cpt++){
+        imgToShow[cpt].addEventListener("keydown",(event)=>{
+            console.log(event.key)
+            if(event.key==='Enter'){
+                openModal(mediaById, mediaSorted, event.target.parentElement.id)
+            } 
+        })                      
     }
 }
 
@@ -242,6 +274,12 @@ async function init(){
             const layout = document.querySelector(".contact_modal")
             layout.addEventListener("click",(event)=>{
                 event.target.className === "contact_modal" ? closeModal() : null
+            })
+
+            document.addEventListener('keydown',(event)=>{
+                if(event.key==='Escape'){
+                    closeModal()
+                }
             })
             
             const contactForm = document.getElementById("contactForm")

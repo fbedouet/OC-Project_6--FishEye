@@ -11,7 +11,7 @@ class formatPicture {
     
     get mediaHtml(){
         const htmlElt = `
-        <img src= "assets/photographers/${this._photographerId}/${this._image}">`
+        <img tabindex="0" src= "assets/photographers/${this._photographerId}/${this._image}">`
         return htmlElt
     }
 
@@ -42,7 +42,7 @@ class formatMovie {
     
     get mediaHtml(){
         const htmlElt = `
-        <video ${this._hasControls ? 'controls' : ''}
+        <video tabindex="0" ${this._hasControls ? 'controls' : ''}
              src= "assets/photographers/${this._photographerId}/${this._video}">
         </video>`
         return htmlElt
