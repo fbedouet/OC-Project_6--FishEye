@@ -25,7 +25,6 @@ function displayPortfolio(mediaById, sortedIds){
         folioSection.appendChild(cardFolio)
     });
     photographerMain .appendChild(folioSection)
-    addOnlyOneLike (mediaById)
 }
 
 function factoryPattern(mediaData){
@@ -39,65 +38,70 @@ function factoryPattern(mediaData){
     }
 }
 
-function dropbox(mediaById){
-    const dropbox = document.querySelectorAll('#dropbox a')
-    const splitter = document.querySelectorAll('#dropbox div')
-    const MEDIA_SORTED = sortBy(mediaById)
-    let mediaSorted
-    
-    for (let cpt=0; cpt<3; cpt++){
-        dropbox[cpt].addEventListener("click", (event)=>{
-            const arrow = document.querySelector(".fa-solid")
-            if (dropbox[1].className==="drop_close"){
-                for (let index = 1; index < dropbox.length; index++) {
-                    dropbox[index].classList.add('drop_open')
-                    dropbox[index].classList.remove('drop_close')
-                    
-                    splitter[index-1].classList.add('on')
+function dropdownChange (mediaById){
+    const dropdownButton = document.getElementById("dropDown__button")
+    const dropdownMenuItems = document.querySelectorAll("#dropDown__menu a")
+    const dropdownMenu = document.getElementById('dropDown__menu')
+         
 
-                }
-
-                arrow.classList[1] === 'fa-chevron-down' 
-                ?(
-                    arrow.classList.remove('fa-chevron-down'),
-                    arrow.classList.add('fa-chevron-up')
-                                 )
-                :null
-                return
-            }
-
-            if (dropbox[1].className==="drop_open"){
-                for (let index = 1; index < dropbox.length; index++) {
-                    dropbox[index].classList.add('drop_close')
-                    dropbox[index].classList.remove('drop_open')
-                    
-                    splitter[index-1].classList.remove('on')
-                }
-                
-                const outchoose = event.target.innerText
-                event.target.innerText = dropbox[0].innerText
-                dropbox[0].innerHTML = outchoose + "<span class=\"fa-solid fa-chevron-down\"></span>"
-                switch (outchoose) {
-                    case "Date":
-                        mediaSorted=MEDIA_SORTED.byDate()
-                        break;
-                        
-                    case "Popularité":
-                        mediaSorted=MEDIA_SORTED.byPopularity()
-                        break;
-                    case "Titre":
-                        mediaSorted=MEDIA_SORTED.byTitle()
-                        break;
-                }
-                displayPortfolio( mediaById, mediaSorted) 
-                displayMediaInModal(mediaById, mediaSorted)
-                return
-            }
-        })
+    const asInerted = (show)=>{
+        const photographHeader = document.querySelector(".photographHeader")
+        const folioSection = document.querySelector(".folioSection")
+        const linkHeader = document.querySelector("header")
+        photographHeader.inert=show
+        folioSection.inert=show
+        linkHeader.inert=show
     }
-    mediaSorted = MEDIA_SORTED.byTitle()
-    displayPortfolio( mediaById, mediaSorted) 
-    displayMediaInModal(mediaById, mediaSorted)
+
+    const dropdownCloseMenu =()=>{
+        dropdownMenu.style.display="none"
+        dropdownButton.children[0].children[1].className="fa-solid fa-chevron-down"
+        asInerted(false)
+        dropdownButton.focus()
+    }               
+
+    const dropdownDisplayMenu = ()=>{
+        if (dropdownMenu.style.display==="block"){
+            dropdownCloseMenu()
+            return
+        }
+        dropdownMenu.style.display="block"
+        dropdownButton.children[0].children[1].className="fa-solid fa-chevron-up"
+        asInerted(true)
+        dropdownMenuItems[0].focus()
+    }
+    dropdownButton.addEventListener("click",dropdownDisplayMenu)
+    
+    const dropdownMenuHandler = (event)=>{
+        const chooseItems = event.target.innerText
+        displayFolio(chooseItems)
+        event.target.innerText = dropdownButton.innerText
+        dropdownButton.children[0].children[0].innerText=chooseItems
+        dropdownCloseMenu()
+    }
+    for (let cpt=0; cpt<dropdownMenuItems.length; cpt++){
+        dropdownMenuItems[cpt].addEventListener("click",dropdownMenuHandler)
+    }
+    const displayFolio = (choose)=>{
+        const MEDIA_SORTED = sortBy(mediaById)
+        let mediaSorted
+        switch (choose){
+            case "Titre":
+                mediaSorted = MEDIA_SORTED.byTitle()
+                break
+            case "Date":
+                mediaSorted=MEDIA_SORTED.byDate()
+                break
+                
+            case "Popularité":
+                mediaSorted=MEDIA_SORTED.byPopularity()
+                break
+        }
+        displayPortfolio( mediaById, mediaSorted) 
+        displayMediaInModal(mediaById, mediaSorted)
+        addOnlyOneLike (mediaById)
+    }
+    displayFolio("Titre")
 }
 
 function sortBy(mediaById){
@@ -138,7 +142,8 @@ async function addOnlyOneLike (mediaById){
     const addLike = document.querySelectorAll(".addLike")
     const likeIt = (event)=>{
         const mediaId = event.target.parentElement.parentElement.parentElement.id
-        if (mediaById[mediaId].liked ||event.key != 'Enter') {
+        const likeTest = mediaById[mediaId].liked||Boolean(event.key !== undefined && event.key !== 'Enter')
+        if (likeTest) {
             return
         }
 
@@ -264,8 +269,10 @@ async function init(){
         return acc
     }, {}) 
     
-    dropbox(mediaById)
+    dropdownChange(mediaById)
     displayTotalLike(mediaById)
+
+
 
     //Modal Contact
             const contactTitle = document.getElementById("contactPhotographer")

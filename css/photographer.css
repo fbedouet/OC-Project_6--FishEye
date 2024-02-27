@@ -139,59 +139,79 @@
 }
 
 /* DropBox design */
-.dropbox_label{
+.sortBy{
+    display: flex;
+    gap:26px;
+    align-items: center;
     margin-top: 20px;
     margin-bottom: 58px;
+}
+.dropbox_label{
     font-size: var(--fontSize18);
     font-weight: var(--bold);
 }
 
-#dropbox {
-    position: absolute;
-    top: 310px;
-    right: 974px;
-    background-color: #911C1C;
-    width: 170px;
-    border-radius: 5px;
+#dropDown{
+    position: relative;
   }
   
-  .drop_choose{
-    display: grid;
-  }
-  
-  a {
+  #dropDown__button{
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    color:#FFFFFF;
-    font-weight: 700;
-    font-size: 18px;
+    background-color: #911C1C;
+    color: #FFFFFF;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
-    text-decoration: none;
-    margin-left: 20px;
-    padding-right: 20px;
+    font-size: 18px;
+    font-weight: 700;
+    border: 0;
+    border-radius: 5px;
+    width: 170px;
+    height: 56.5px;
+    padding: 0 10px;
   }
   
-  .on{
-    border: #FFFFFF solid 1px;
+  #dropDown__menu{
+    display: none;
+    position: absolute;
+    top:51.5px;
+    background-color: #911C1C;
+    border-radius: 0 0 5px 5px;
     width: 150px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 5px;
+    margin:0;
+  }
+  
+  #dropDown__menu li{
+    display: flex;
+    align-items: center;
+    list-style-type: none;
+  }
+  
+  #dropDown__menu a{
+    cursor: pointer;
     margin-left: 10px;
+    color: #FFFFFF;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    text-decoration: none;
   }
   
-  .fa-solid{
+  .center{
+    height:54.5px;
+    border-bottom: #FFFFFF solid 1px;
+    border-top: #FFFFFF solid 1px;
+  }
+  
+  .ext{
+    height: 56.5px;
+  }
+  
+  #title__button{
     margin-left: 10px;
-  }
-  
-  .drop_button {
-    height: 57px;
-  }
-  
-  .drop_open{
-    height: 57px;
-    overflow: visible;
-  }
-  
-  .drop_close{
-    height: 0;
-    overflow: hidden;
+    width: 150px;
+    display: flex;
+    justify-content: space-between;
   }
