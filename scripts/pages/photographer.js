@@ -52,14 +52,14 @@ function dropdownChange (mediaById){
         folioSection.inert=show
         linkHeader.inert=show
     }
-
+    //Close the menu by clicking on the button
     const dropdownCloseMenu =()=>{
         dropdownMenu.style.display="none"
         dropdownButton.children[0].children[1].className="fa-solid fa-chevron-down"
         asInerted(false)
         dropdownButton.focus()
     }               
-
+    //Open the menu by clicking on the button
     const dropdownDisplayMenu = ()=>{
         if (dropdownMenu.style.display==="block"){
             dropdownCloseMenu()
@@ -72,16 +72,7 @@ function dropdownChange (mediaById){
     }
     dropdownButton.addEventListener("click",dropdownDisplayMenu)
     
-    const dropdownMenuHandler = (event)=>{
-        const chooseItems = event.target.innerText
-        displayFolio(chooseItems)
-        event.target.innerText = dropdownButton.innerText
-        dropdownButton.children[0].children[0].innerText=chooseItems
-        dropdownCloseMenu()
-    }
-    for (let cpt=0; cpt<dropdownMenuItems.length; cpt++){
-        dropdownMenuItems[cpt].addEventListener("click",dropdownMenuHandler)
-    }
+    //display of selected sort
     const displayFolio = (choose)=>{
         const MEDIA_SORTED = sortBy(mediaById)
         let mediaSorted
@@ -101,6 +92,19 @@ function dropdownChange (mediaById){
         displayMediaInModal(mediaById, mediaSorted)
         addOnlyOneLike (mediaById)
     }
+
+    const dropdownMenuHandler = (event)=>{
+        const chooseItems = event.target.innerText
+        displayFolio(chooseItems)
+        event.target.innerText = dropdownButton.innerText
+        dropdownButton.children[0].children[0].innerText=chooseItems
+        dropdownCloseMenu()
+    }
+
+    for (let cpt=0; cpt<dropdownMenuItems.length; cpt++){
+        dropdownMenuItems[cpt].addEventListener("click",dropdownMenuHandler)
+    }
+    //display first page access
     displayFolio("Titre")
 }
 
@@ -162,7 +166,24 @@ async function addOnlyOneLike (mediaById){
 
 }
 
+const inertedBackground = ()=>{
+    const main =document.querySelector("main")
+    const header =document.querySelector("header")
+
+    const enable=()=>{
+        main.inert=true
+        header.inert=true
+    }
+
+    const disable = ()=>{
+        main.inert=false
+        header.inert=false
+    }
+    return {enable, disable}
+}
+
 const openModal = (mediaById, sortedIds, mediaId) => {
+    //Display carousel with media selected
     const carouselModal = document.querySelector(".carouselLayout")
     const sortedMedias = sortedIds.map((id) => mediaById[id])
     const idSorted = sortedMedias.map(elt=>String(elt.id))
@@ -170,8 +191,10 @@ const openModal = (mediaById, sortedIds, mediaId) => {
     mediaInCarouselTemplate(callbackFactory)
     carouselModal.style.display="flex"
 
+    //Navigation in the carousel:
     const mediaInCarousel = document.querySelector(".dMM__mediaContents-img")
 
+        //with previous arrow icon
     const previousIcon = document.getElementById("previousMedia")
     const previousmedia = ()=>{
         const mediaId = mediaInCarousel.id
@@ -185,6 +208,7 @@ const openModal = (mediaById, sortedIds, mediaId) => {
     }
     previousIcon.addEventListener("click",previousmedia)
 
+        //with next arrow icon
     const nextIcon = document.getElementById("nextMedia")
     const nextMedia = ()=>{
         const mediaId = mediaInCarousel.id
@@ -198,6 +222,7 @@ const openModal = (mediaById, sortedIds, mediaId) => {
     }
     nextIcon.addEventListener("click",nextMedia)
 
+    //close carousel management
     const layout = document.querySelector(".displayMediaModal")
     const closeModal = (event)=>{
         if(event.target.className === "displayMediaModal" || event.target.className === "dMM_controls-close" || event.key==="Escape"){
@@ -208,7 +233,8 @@ const openModal = (mediaById, sortedIds, mediaId) => {
         }
     }
     layout.addEventListener("click",closeModal)
-
+    
+    //keyboard navigation management
     const keypressedHandler = (event)=>{
         switch (event.key){
             case 'ArrowLeft':
@@ -220,11 +246,15 @@ const openModal = (mediaById, sortedIds, mediaId) => {
             case 'Escape':
                 closeModal(event)
                 break
+            case 'Enter':
+                playVideo(event)
+                break
             default:
                 return
         }
     }
     document.addEventListener('keydown',keypressedHandler)
+    inertedBackground().enable()
 }
 
 function displayMediaInModal (mediaById, mediaSorted) {
@@ -250,9 +280,46 @@ function displayMediaInModal (mediaById, mediaSorted) {
 function closeCarouselModal(){
     const carouselModal = document.querySelector(".carouselLayout")
     carouselModal.style.display="none"
+    inertedBackground().disable()
 }
 
-async function init(){
+function displayContactModal(photographerName){
+    const contactTitle = document.getElementById("contactPhotographer")
+
+    contactTitle.innerText = photographerName
+
+    const layout = document.querySelector(".contact_modal")
+    layout.addEventListener("click",(event)=>{
+        event.target.className === "contact_modal" ? closeModal() : null
+    })
+
+    document.addEventListener('keydown',(event)=>{
+        if(event.key==='Escape'){
+            closeModal()
+        }
+    })
+            
+    const contactForm = document.getElementById("contactForm")
+            
+            
+    const form = document.querySelectorAll(".cF__input")
+    form.forEach(elt=>{
+        elt.value = ""
+    })
+
+    contactForm.addEventListener("submit",(event)=>{
+        event.preventDefault()
+        const formData = new ContactForm(form)
+        const inputHandlers = formData.inputEntries
+        console.log(inputHandlers)
+        form.forEach(elt=>{
+            elt.value = ""
+        })
+        closeModal()
+    })
+}
+
+async function init(){ 
     const photographers = await dataPhotographerApi()
     idKey=idRecover()
     
@@ -271,41 +338,7 @@ async function init(){
     
     dropdownChange(mediaById)
     displayTotalLike(mediaById)
-
-
-
-    //Modal Contact
-            const contactTitle = document.getElementById("contactPhotographer")
-            contactTitle.innerText=photographer.name
-
-            const layout = document.querySelector(".contact_modal")
-            layout.addEventListener("click",(event)=>{
-                event.target.className === "contact_modal" ? closeModal() : null
-            })
-
-            document.addEventListener('keydown',(event)=>{
-                if(event.key==='Escape'){
-                    closeModal()
-                }
-            })
-            
-            const contactForm = document.getElementById("contactForm")
-            
-            
-            const form = document.querySelectorAll(".cF__input")
-            form.forEach(elt=>{
-                elt.value = ""
-            })
-
-            contactForm.addEventListener("submit",(event)=>{
-                event.preventDefault()
-                const formData = new ContactForm(form)
-                const inputHandlers = formData.inputEntries
-                console.log(inputHandlers)
-                form.forEach(elt=>{
-                    elt.value = ""
-                })
-            })
+    displayContactModal(photographer.name)
 }
 
 init()
