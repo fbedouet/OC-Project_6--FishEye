@@ -225,7 +225,10 @@ const openModal = (mediaById, sortedIds, mediaId) => {
     //close carousel management
     const layout = document.querySelector(".displayMediaModal")
     const closeModal = (event)=>{
-        if(event.target.className === "displayMediaModal" || event.target.className === "dMM_controls-close" || event.key==="Escape"){
+        if(event.target.className === "displayMediaModal" 
+                    || event.target.parentElement.classList[0] === "dMM_controls-close" 
+                    || event.target.classList[0]==="dMM_controls-close"
+                    || event.key==="Escape"){
             closeCarouselModal()
             nextIcon.removeEventListener("click",nextMedia)
             previousIcon.removeEventListener("click",previousmedia)
@@ -235,25 +238,37 @@ const openModal = (mediaById, sortedIds, mediaId) => {
     layout.addEventListener("click",closeModal)
     
     //keyboard navigation management
+    const modalId = document.getElementById("dMM__carousel")
+    const focusable = modalId.querySelectorAll(".focusable")
     const keypressedHandler = (event)=>{
-        switch (event.key){
-            case 'ArrowLeft':
-                previousmedia()
-                break
-            case 'ArrowRight':
-                nextMedia()
-                break
-            case 'Escape':
-                closeModal(event)
-                break
-            case 'Enter':
-                playVideo(event)
-                break
-            default:
-                return
+        if (event.key==='Enter'){
+            switch (document.activeElement){
+                case focusable[0]:
+                    previousmedia()
+                    break
+                case focusable[1]:
+                    closeModal(event)
+                    break
+                case focusable[2]:
+                    nextMedia()
+                    break
+            }
+        }
+        if (event.key==='ArrowLeft'){
+            previousmedia()
+            return
+        }
+        if (event.key==='ArrowRight'){
+            nextMedia()
+            return
+        }
+        if (event.key==='Escape'){
+            closeModal(event)
+            return
         }
     }
     document.addEventListener('keydown',keypressedHandler)
+    
     inertedBackground().enable()
 }
 
@@ -269,7 +284,6 @@ function displayMediaInModal (mediaById, mediaSorted) {
 
     for (let cpt=0; cpt <imgToShow.length;cpt++){
         imgToShow[cpt].addEventListener("keydown",(event)=>{
-            console.log(event.key)
             if(event.key==='Enter'){
                 openModal(mediaById, mediaSorted, event.target.parentElement.id)
             } 
@@ -319,6 +333,31 @@ function displayContactModal(photographerName){
     })
 }
 
+const trapsFocusInModal = (modalId) => {     //trapsFocusInModal = (modalId, IndexRemoveListnerElt)
+    const focusableElts = modalId.querySelectorAll("input, button, .focusable")
+    const firstFocusableElt = focusableElts[0]
+    const lastFocusableElt =  focusableElts[focusableElts.length-1]
+    focusableElts[1].focus()
+    const focusTrapHandler = (event) => {
+        
+        if (event.key === "Tab"){
+            if(document.activeElement === lastFocusableElt && !event.shiftKey){
+                firstFocusableElt.focus()
+                event.preventDefault()
+            }
+            if(document.activeElement === firstFocusableElt && event.shiftKey){
+                lastFocusableElt.focus()
+                event.preventDefault()
+            }
+        }
+        // if (event.key==="Enter" && document.activeElement === focusableElts[IndexRemoveListnerElt]){
+        //     modalId.removeEventListener("keydown", focusTrapHandler)
+        // }
+        
+    }
+    modalId.addEventListener("keydown", focusTrapHandler)   
+}
+
 async function init(){ 
     const photographers = await dataPhotographerApi()
     idKey=idRecover()
@@ -339,6 +378,17 @@ async function init(){
     dropdownChange(mediaById)
     displayTotalLike(mediaById)
     displayContactModal(photographer.name)
+    trapsFocusInModal(document.getElementById("dMM__carousel"))
+    trapsFocusInModal(document.getElementById("contactLayout"))
+
+    const modal = document.getElementById("contactLayout")
+    modal.querySelector(".focusable").addEventListener("keydown",(event)=>{
+        if (event.key === "Enter"){
+            closeModal()
+        }
+    })
+
+
 }
 
 init()

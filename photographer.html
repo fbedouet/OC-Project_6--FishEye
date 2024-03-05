@@ -30,6 +30,7 @@
         <nav id="dropDown">
           <button id="dropDown__button"><div id="title__button"><span>Titre</span><span class="fa-solid fa-chevron-down"></span></div></button>
           <ul id="dropDown__menu">
+              <li class="niv_0"><a href="#">Titre</a><span class="fa-solid fa-chevron-up"></span></li>
               <li class="center"><a href="#">Date</a></li>
               <li class="ext"><a  href="#">Popularité</a></li>
           </ul>
@@ -49,7 +50,9 @@
         <div class="modal">
           <header>
             <h2>Contacter-moi</h2>
-            <img src="assets/icons/close.svg" onclick="closeModal()" />
+            <a href= "#" class="focusable">
+              <img src="assets/icons/close.svg" onclick="closeModal()" />
+            </a>
           </header>
           <h3 id="contactPhotographer"></h3>
           
@@ -101,7 +104,7 @@
         <section id="dMM__carousel">
 
             <div class="dMM__controls">
-                <img class="dMM_controls-cdes" src="/assets/icons/chevron-left-solid.svg" alt="" id="previousMedia">
+                <a href="#" class="dMM_controls-cdes focusable"><img src="/assets/icons/chevron-left-solid.svg" alt="" id="previousMedia"></a>
             </div>
             
             <div class="dMM__media">
@@ -114,8 +117,8 @@
             </div>
             
             <div class="dMM__controls">
-                <img class="dMM_controls-close" src="/assets/icons/xmark-solid.svg">
-                <img class="dMM_controls-cdes" src="/assets/icons/chevron-right-solid.svg" alt="" id="nextMedia">
+              <a href="#" class="dMM_controls-close focusable"><img src="/assets/icons/xmark-solid.svg"></a>
+              <a href="#" class="dMM_controls-cdes focusable"><img src="/assets/icons/chevron-right-solid.svg" alt="" id="nextMedia"></a>
             </div>
             
         </section>
