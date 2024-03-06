@@ -1,4 +1,4 @@
-function idRecover(){
+function recoverIdFromPhotographer(){
     const urlStr=window.location.href
     const urlObj=new URL(urlStr)
     return urlObj.search.split("=")[1]
@@ -29,54 +29,50 @@ function displayPortfolio(mediaById, sortedIds){
 
 function factoryPattern(mediaData){
     if(mediaData.image){
-        const picture = new formatPicture(mediaData)
+        const picture = new FormatPicture(mediaData)
         return picture 
     }
     if (mediaData.video){
-        const movie = new formatMovie(mediaData)
+        const movie = new FormatMovie(mediaData)
         return movie 
     }
 }
 
-function dropdownChange (mediaById){
+function sortByDropdownMenu (mediaById){
     const dropdownButton = document.getElementById("dropDown__button")
     const dropdownMenuItems = document.querySelectorAll("#dropDown__menu a")
     const dropdownMenu = document.getElementById('dropDown__menu')
-         
 
-    const asInerted = (show)=>{
-        const photographHeader = document.querySelector(".photographHeader")
-        const folioSection = document.querySelector(".folioSection")
-        const linkHeader = document.querySelector("header")
-        photographHeader.inert=show
-        folioSection.inert=show
-        linkHeader.inert=show
-    }
-    //Close the menu by clicking on the button
-    const dropdownCloseMenu =()=>{
-        dropdownMenu.style.display="none"
-        dropdownButton.children[0].children[1].className="fa-solid fa-chevron-down"
-        asInerted(false)
-        dropdownButton.focus()
-    }               
     //Open the menu by clicking on the button
-    const dropdownDisplayMenu = ()=>{
-        if (dropdownMenu.style.display==="block"){
-            dropdownCloseMenu()
-            return
-        }
+    const openDropdownMenu = ()=>{
         dropdownMenu.style.display="block"
-        dropdownButton.children[0].children[1].className="fa-solid fa-chevron-up"
-        asInerted(true)
+        // asInerted(true)
         dropdownMenuItems[0].focus()
     }
-    dropdownButton.addEventListener("click",dropdownDisplayMenu)
+    dropdownButton.addEventListener("click",openDropdownMenu)
+
+    //Close the menu
+    const closeDropdownMenu =()=>{
+        const dropdownMenu = document.getElementById('dropDown__menu')
+        const dropdownButton = document.getElementById("dropDown__button")
+        dropdownMenu.style.display="none"
+        dropdownButton.focus()
+    } 
     
+    //Close the menu by clicking outside the selection
+    const closeWhenClickedOutside = (event)=>{
+        if (event.target.id==="dropDown__button"){
+            return
+        }
+        closeDropdownMenu()
+    }
+    document.querySelector("body").addEventListener("click",closeWhenClickedOutside)
+
     //display of selected sort
-    const displayFolio = (choose)=>{
+    const displaySelectedSort = (selectedItem)=>{
         const MEDIA_SORTED = sortBy(mediaById)
         let mediaSorted
-        switch (choose){
+        switch (selectedItem){
             case "Titre":
                 mediaSorted = MEDIA_SORTED.byTitle()
                 break
@@ -92,20 +88,19 @@ function dropdownChange (mediaById){
         displayMediaInModal(mediaById, mediaSorted)
         addOnlyOneLike (mediaById)
     }
-
-    const dropdownMenuHandler = (event)=>{
-        const chooseItems = event.target.innerText
-        displayFolio(chooseItems)
+    const updateMenuItems = (event)=>{
+        const selectedItem = event.target.innerText
+        displaySelectedSort(selectedItem)
         event.target.innerText = dropdownButton.innerText
-        dropdownButton.children[0].children[0].innerText=chooseItems
-        dropdownCloseMenu()
+        dropdownButton.children[0].children[0].innerText=selectedItem
+        dropdownMenu.children[0].children[0].innerText=selectedItem
+        closeDropdownMenu()
     }
-
     for (let cpt=0; cpt<dropdownMenuItems.length; cpt++){
-        dropdownMenuItems[cpt].addEventListener("click",dropdownMenuHandler)
+        dropdownMenuItems[cpt].addEventListener("click",updateMenuItems)
     }
     //display first page access
-    displayFolio("Titre")
+    displaySelectedSort("Titre")
 }
 
 function sortBy(mediaById){
@@ -166,7 +161,7 @@ async function addOnlyOneLike (mediaById){
 
 }
 
-const inertedBackground = ()=>{
+const inertBackgroundModal = ()=>{
     const main =document.querySelector("main")
     const header =document.querySelector("header")
 
@@ -196,7 +191,7 @@ const openModal = (mediaById, sortedIds, mediaId) => {
 
         //with previous arrow icon
     const previousIcon = document.getElementById("previousMedia")
-    const previousmedia = ()=>{
+    const showPreviousmedia = ()=>{
         const mediaId = mediaInCarousel.id
         let indexPreviousMedia = idSorted.indexOf(mediaId)-1
         if (indexPreviousMedia<0){
@@ -206,11 +201,11 @@ const openModal = (mediaById, sortedIds, mediaId) => {
         const callbackFactory=factoryPattern(mediaById[idOfPreviousMedia])
         mediaInCarouselTemplate(callbackFactory)
     }
-    previousIcon.addEventListener("click",previousmedia)
+    previousIcon.addEventListener("click",showPreviousmedia)
 
         //with next arrow icon
     const nextIcon = document.getElementById("nextMedia")
-    const nextMedia = ()=>{
+    const showNextMedia = ()=>{
         const mediaId = mediaInCarousel.id
         let indexNextMedia = idSorted.indexOf(mediaId)+1
         if (indexNextMedia>idSorted.length-1){
@@ -220,7 +215,7 @@ const openModal = (mediaById, sortedIds, mediaId) => {
         const callbackFactory=factoryPattern(mediaById[idOfNextMedia])
         mediaInCarouselTemplate(callbackFactory)
     }
-    nextIcon.addEventListener("click",nextMedia)
+    nextIcon.addEventListener("click",showNextMedia) //nextMedia
 
     //close carousel management
     const layout = document.querySelector(".displayMediaModal")
@@ -230,9 +225,9 @@ const openModal = (mediaById, sortedIds, mediaId) => {
                     || event.target.classList[0]==="dMM_controls-close"
                     || event.key==="Escape"){
             closeCarouselModal()
-            nextIcon.removeEventListener("click",nextMedia)
-            previousIcon.removeEventListener("click",previousmedia)
-            document.removeEventListener('keydown',keypressedHandler)
+            nextIcon.removeEventListener("click",showNextMedia)
+            previousIcon.removeEventListener("click",showPreviousmedia)
+            document.removeEventListener('keydown',manageKeysPresses)
         }
     }
     layout.addEventListener("click",closeModal)
@@ -240,26 +235,26 @@ const openModal = (mediaById, sortedIds, mediaId) => {
     //keyboard navigation management
     const modalId = document.getElementById("dMM__carousel")
     const focusable = modalId.querySelectorAll(".focusable")
-    const keypressedHandler = (event)=>{
+    const manageKeysPresses = (event)=>{
         if (event.key==='Enter'){
             switch (document.activeElement){
                 case focusable[0]:
-                    previousmedia()
+                    showPreviousmedia()
                     break
                 case focusable[1]:
                     closeModal(event)
                     break
                 case focusable[2]:
-                    nextMedia()
+                    showNextMedia()
                     break
             }
         }
         if (event.key==='ArrowLeft'){
-            previousmedia()
+            showPreviousmedia()
             return
         }
         if (event.key==='ArrowRight'){
-            nextMedia()
+            showNextMedia()
             return
         }
         if (event.key==='Escape'){
@@ -267,9 +262,9 @@ const openModal = (mediaById, sortedIds, mediaId) => {
             return
         }
     }
-    document.addEventListener('keydown',keypressedHandler)
+    document.addEventListener('keydown',manageKeysPresses)
     
-    inertedBackground().enable()
+    inertBackgroundModal().enable()
 }
 
 function displayMediaInModal (mediaById, mediaSorted) {
@@ -294,7 +289,7 @@ function displayMediaInModal (mediaById, mediaSorted) {
 function closeCarouselModal(){
     const carouselModal = document.querySelector(".carouselLayout")
     carouselModal.style.display="none"
-    inertedBackground().disable()
+    inertBackgroundModal().disable()
 }
 
 function displayContactModal(photographerName){
@@ -333,13 +328,13 @@ function displayContactModal(photographerName){
     })
 }
 
-const trapsFocusInModal = (modalId) => {     //trapsFocusInModal = (modalId, IndexRemoveListnerElt)
+const trapFocusInModal = (modalId) => {
     const focusableElts = modalId.querySelectorAll("input, button, .focusable")
     const firstFocusableElt = focusableElts[0]
     const lastFocusableElt =  focusableElts[focusableElts.length-1]
     focusableElts[1].focus()
+
     const focusTrapHandler = (event) => {
-        
         if (event.key === "Tab"){
             if(document.activeElement === lastFocusableElt && !event.shiftKey){
                 firstFocusableElt.focus()
@@ -350,17 +345,13 @@ const trapsFocusInModal = (modalId) => {     //trapsFocusInModal = (modalId, Ind
                 event.preventDefault()
             }
         }
-        // if (event.key==="Enter" && document.activeElement === focusableElts[IndexRemoveListnerElt]){
-        //     modalId.removeEventListener("keydown", focusTrapHandler)
-        // }
-        
     }
     modalId.addEventListener("keydown", focusTrapHandler)   
 }
 
 async function init(){ 
     const photographers = await dataPhotographerApi()
-    idKey=idRecover()
+    idKey=recoverIdFromPhotographer()
     
     const photographer = photographers.getPhotographerById(idKey)
     const photographerSection = document.querySelector(".photographHeader")
@@ -375,20 +366,12 @@ async function init(){
         return acc
     }, {}) 
     
-    dropdownChange(mediaById)
+    sortByDropdownMenu(mediaById)
     displayTotalLike(mediaById)
     displayContactModal(photographer.name)
-    trapsFocusInModal(document.getElementById("dMM__carousel"))
-    trapsFocusInModal(document.getElementById("contactLayout"))
-
-    const modal = document.getElementById("contactLayout")
-    modal.querySelector(".focusable").addEventListener("keydown",(event)=>{
-        if (event.key === "Enter"){
-            closeModal()
-        }
-    })
-
-
+    trapFocusInModal(document.getElementById("dMM__carousel"))
+    trapFocusInModal(document.getElementById("contactLayout"))
+    trapFocusInModal(document.getElementById("dropDown__menu"))
 }
 
 init()

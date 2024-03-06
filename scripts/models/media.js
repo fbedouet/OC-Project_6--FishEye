@@ -1,4 +1,4 @@
-class formatPicture {
+class FormatPicture {
     constructor(mediaData){
         this._id = mediaData.id
         this._photographerId = mediaData.photographerId
@@ -28,7 +28,7 @@ class formatPicture {
     }
 }
 
-class formatMovie {
+class FormatMovie {
     constructor(mediaData){
         this._id = mediaData.id
         this._photographerId = mediaData.photographerId
