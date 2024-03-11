@@ -30,11 +30,12 @@
     padding-top: 20px;
 }
 
-.dMM__mediaContents-img img{
+.dMM__mediaContents-img img,
+.dMM__mediaContents-img video{
     height: 100%;
     width: 100%;
     object-fit: cover;
-    border-radius: 10px;
+    border-radius: 5px;
 }
 
 .dMM__mediaContents-title{

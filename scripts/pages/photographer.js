@@ -20,14 +20,14 @@ function displayPortfolio(mediaById, sortedIds){
     folioSection.classList.add("folioSection")
  
     sortedMedias.forEach(elt => {
-        const callbackFactory=factoryPattern(elt)
-        const cardFolio= cardFolioTemplate(callbackFactory)
+        const media=createMedia(elt)
+        const cardFolio= cardFolioTemplate(media)
         folioSection.appendChild(cardFolio)
     });
     photographerMain .appendChild(folioSection)
 }
 
-function factoryPattern(mediaData){
+function createMedia(mediaData){
     if(mediaData.image){
         const picture = new FormatPicture(mediaData)
         return picture 
@@ -46,7 +46,6 @@ function sortByDropdownMenu (mediaById){
     //Open the menu by clicking on the button
     const openDropdownMenu = ()=>{
         dropdownMenu.style.display="block"
-        // asInerted(true)
         dropdownMenuItems[0].focus()
     }
     dropdownButton.addEventListener("click",openDropdownMenu)
@@ -66,7 +65,7 @@ function sortByDropdownMenu (mediaById){
         }
         closeDropdownMenu()
     }
-    document.querySelector("body").addEventListener("click",closeWhenClickedOutside)
+    document.addEventListener("click",closeWhenClickedOutside)
 
     //display of selected sort
     const displaySelectedSort = (selectedItem)=>{
@@ -182,7 +181,7 @@ const openModal = (mediaById, sortedIds, mediaId) => {
     const carouselModal = document.querySelector(".carouselLayout")
     const sortedMedias = sortedIds.map((id) => mediaById[id])
     const idSorted = sortedMedias.map(elt=>String(elt.id))
-    const callbackFactory = factoryPattern(mediaById[mediaId])
+    const callbackFactory = createMedia(mediaById[mediaId])
     mediaInCarouselTemplate(callbackFactory)
     carouselModal.style.display="flex"
 
@@ -198,7 +197,7 @@ const openModal = (mediaById, sortedIds, mediaId) => {
             indexPreviousMedia=idSorted.length-1
         }
         const idOfPreviousMedia = idSorted[indexPreviousMedia]
-        const callbackFactory=factoryPattern(mediaById[idOfPreviousMedia])
+        const callbackFactory=createMedia(mediaById[idOfPreviousMedia])
         mediaInCarouselTemplate(callbackFactory)
     }
     previousIcon.addEventListener("click",showPreviousmedia)
@@ -212,7 +211,7 @@ const openModal = (mediaById, sortedIds, mediaId) => {
             indexNextMedia=0
         }
         const idOfNextMedia = idSorted[indexNextMedia]
-        const callbackFactory=factoryPattern(mediaById[idOfNextMedia])
+        const callbackFactory=createMedia(mediaById[idOfNextMedia])
         mediaInCarouselTemplate(callbackFactory)
     }
     nextIcon.addEventListener("click",showNextMedia) //nextMedia
@@ -328,13 +327,13 @@ function displayContactModal(photographerName){
     })
 }
 
-const trapFocusInModal = (modalId) => {
-    const focusableElts = modalId.querySelectorAll("input, button, .focusable")
+const trapFocus = (domElt) => {
+    const focusableElts = domElt.querySelectorAll("input, button, .focusable")
     const firstFocusableElt = focusableElts[0]
     const lastFocusableElt =  focusableElts[focusableElts.length-1]
     focusableElts[1].focus()
 
-    const focusTrapHandler = (event) => {
+    const trapFocusHandler = (event) => {
         if (event.key === "Tab"){
             if(document.activeElement === lastFocusableElt && !event.shiftKey){
                 firstFocusableElt.focus()
@@ -346,7 +345,7 @@ const trapFocusInModal = (modalId) => {
             }
         }
     }
-    modalId.addEventListener("keydown", focusTrapHandler)   
+    domElt.addEventListener("keydown", trapFocusHandler)   
 }
 
 async function init(){ 
@@ -369,9 +368,9 @@ async function init(){
     sortByDropdownMenu(mediaById)
     displayTotalLike(mediaById)
     displayContactModal(photographer.name)
-    trapFocusInModal(document.getElementById("dMM__carousel"))
-    trapFocusInModal(document.getElementById("contactLayout"))
-    trapFocusInModal(document.getElementById("dropDown__menu"))
+    trapFocus(document.getElementById("dMM__carousel"))
+    trapFocus(document.getElementById("contactLayout"))
+    trapFocus(document.getElementById("dropDown__menu"))
 }
 
 init()

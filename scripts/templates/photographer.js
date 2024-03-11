@@ -30,7 +30,7 @@ function photographerTemplate(data) {
                         </div>
                         <button class="contactButton" onclick="displayModal()">Contactez-moi</button>
                         <div class="profil">
-                            <img src=${picture} class="profil_img">
+                            <img src=${picture} class="profil_img" alt="">
                         </div>
         `
         return identity

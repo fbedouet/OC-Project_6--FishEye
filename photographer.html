@@ -17,8 +17,8 @@
   <body>
 
     <header>
-      <a href="/index.html">
-        <img src="assets/images/logo.png" class="logo" alt="fisheye home page"/>
+      <a href="/index.html" aria-label="retour vers la page principale">
+        <img src="assets/images/logo.png" class="logo" alt=""/>
       </a>
     </header>
 
@@ -27,13 +27,14 @@
       </section>
       <div class="sortBy">
         <p class="dropbox_label">Trier par</p>
-        <nav id="dropDown">
+        <nav id="dropDown" aria-label="trier le contenu">
           <button id="dropDown__button"><div id="title__button" inert=""><span>Titre</span><span class="fa-solid fa-chevron-down"></span></div></button>
           <ul id="dropDown__menu">
-              <li class="niv_0"><a href="#" class="focusable">Titre</a><span class="fa-solid fa-chevron-up"></span></li>
+              <li class="niv_0" ><a href="#" class="focusable" >Titre</a><span class="fa-solid fa-chevron-up"></span></li>
               <li class="center"><a href="#" class="focusable">Date</a></li>
-              <li class="ext"><a  href="#" class="focusable">Popularité</a></li>
+              <li class="ext"><a href="#" class="focusable">Popularité</a></li>
           </ul>
+        </nav>
       </div>
       
       <div class="stickyFooter">
@@ -101,24 +102,23 @@
 
     <div class="carouselLayout">
       <div class="displayMediaModal"> <!--Alias dMM-->
-        <section id="dMM__carousel">
+        <section id="dMM__carousel" aria-label="carroussel des image et vidéo du photographe">
 
             <div class="dMM__controls">
-                <a href="#" class="dMM_controls-cdes focusable"><img src="/assets/icons/chevron-left-solid.svg" alt="" id="previousMedia"></a>
+                <a href="#" class="dMM_controls-cdes focusable" aria-label="lien vers l'image ou video précédente"><img src="/assets/icons/chevron-left-solid.svg" alt="" id="previousMedia"></a>
             </div>
             
             <div class="dMM__media">
-              <div class="dMM__mediaContents"> <!--"modal__media-contents"-->
+              <div class="dMM__mediaContents">
                 <div class="dMM__mediaContents-img">
-                    <!-- <img src="/Event_18thAnniversary.jpg"> -->
                 </div>
                 <p class="dMM__mediaContents-title"></p>
               </div>
             </div>
             
             <div class="dMM__controls">
-              <a href="#" class="dMM_controls-close focusable"><img src="/assets/icons/xmark-solid.svg"></a>
-              <a href="#" class="dMM_controls-cdes focusable"><img src="/assets/icons/chevron-right-solid.svg" alt="" id="nextMedia"></a>
+              <a href="#" class="dMM_controls-close focusable" aria-label="bouton de fermeture du carroussel"><img src="/assets/icons/xmark-solid.svg" alt=""></a>
+              <a href="#" class="dMM_controls-cdes focusable" aria-label="lien vers l'image ou video suivante"><img src="/assets/icons/chevron-right-solid.svg" alt="" id="nextMedia"></a>
             </div>
             
         </section>
