@@ -70,7 +70,6 @@
 }
 
 #contactLayout{
-    display: none;
     position: fixed;
     top: 0;
     bottom: 0;
@@ -79,6 +78,11 @@
     z-index: 1000;
     background-color: rgba(196,196,196,0.4);
 }
+
+#contactLayout[aria-hidden="true"]{
+    visibility:hidden;
+    opacity: 0;
+  }
 
 .contact_modal{
     display: flex;
@@ -132,7 +136,6 @@
     color: #312E2E;
     font-size: 36px;
 }
-
 
 
 

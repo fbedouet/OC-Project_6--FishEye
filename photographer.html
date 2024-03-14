@@ -7,8 +7,8 @@
     <script src="scripts/api/api.js" defer></script>
     <script src="scripts/templates/photographer.js" defer></script>
     <script src="scripts/models/media.js" defer></script>
-    <script src="/scripts/pages/photographer.js" defer></script>
-    <script src="/scripts/utils/contactForm.js" defer></script>
+    <script src="scripts/pages/photographer.js" defer></script>
+    <script src="scripts/utils/contactForm.js" defer></script>
     <link rel="icon" type="image/png" href="assets/favicon.png">
     <script src="https://kit.fontawesome.com/1173bca6e6.js" crossorigin="anonymous"></script>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&display=swap" rel="stylesheet">
@@ -16,27 +16,33 @@
   </head>
   <body>
 
-    <header>
+    <header id="header" aria-hidden="false">
       <a href="/index.html" aria-label="retour vers la page principale">
         <img src="assets/images/logo.png" class="logo" alt=""/>
       </a>
     </header>
 
-    <main id="main">
+    <main id="main" aria-hidden="false">
       <section class="photographHeader">
       </section>
       <div class="sortBy">
         <p class="dropbox_label">Trier par</p>
-        <nav id="dropDown" aria-label="trier le contenu">
-          <button id="dropDown__button"><div id="title__button" inert=""><span>Titre</span><span class="fa-solid fa-chevron-down"></span></div></button>
-          <ul id="dropDown__menu">
-              <li class="niv_0" ><a href="#" class="focusable" >Titre</a><span class="fa-solid fa-chevron-up"></span></li>
-              <li class="center"><a href="#" class="focusable">Date</a></li>
-              <li class="ext"><a href="#" class="focusable">Popularité</a></li>
+        <nav role="navigation" id="dropDown">
+          <button 
+            id="dropDown__button"
+            type="button"
+            aria-controls="dropDown__menu"
+            aria-haspopup="dialog"
+            aria-label="media trié par titre"> <div id="title__button" inert=""><span>Titre</span><span class="fa-solid fa-chevron-down"></span></div>
+          </button>
+          <ul id="dropDown__menu" role="dialog" aria-hidden="true">
+              <li class="niv_0"><a href="#" class="focusable" aria-label="trier par titre">Titre</a><span class="fa-solid fa-chevron-up"></span></li>
+              <li class="center"><a href="#" class="focusable" aria-label="trier par date">Date</a></li>
+              <li class="ext"><a href="#" class="focusable" aria-label="trier par popularité">Popularité</a></li>
           </ul>
         </nav>
       </div>
-      
+
       <div class="stickyFooter">
         <div class="likesPrice">
           <span> <p id="photographerLikes"></p> <i class="heart blackHeart "></i> </span>
@@ -46,13 +52,18 @@
 
     </main>
 
-    <div id="contactLayout">
-      <div class="contact_modal">
-        <div class="modal">
+    <div 
+      id="contactLayout"
+      role ="dialog"
+      aria-modal="true"
+      aria-hidden="true"
+      tabindex="-1">
+      <div class="contact_modal" role="document">
+        <section class="modal">
           <header>
-            <h2>Contacter-moi</h2>
-            <a href= "#" class="focusable">
-              <img src="assets/icons/close.svg" onclick="closeModal()" />
+            <h2 id="modalTitle">Contacter-moi</h2>
+            <a href= "#" class="focusable closeContact">
+              <img src="assets/icons/close.svg" onclick="closeModal()" aria-label="Fermer la fenêtre" />
             </a>
           </header>
           <h3 id="contactPhotographer"></h3>
@@ -60,13 +71,13 @@
           <form id="contactForm"
                 name="contact"
                 action=""
-                method="get"
+                method="post"
                 onsubmit=""
                 novalidate
           >
               <label for="firstName">Prénom</label>
               <input class="cF__input"
-                     type="text"
+                     type="text"      
                      id="firstName"
                      name="firstName"
               />
@@ -96,14 +107,13 @@
             </div>
           </form>
 
-        </div>
+        </section>
       </div>
     </div>
 
-    <div class="carouselLayout">
+    <div class="carouselLayout" tabindex="-1">
       <div class="displayMediaModal"> <!--Alias dMM-->
-        <section id="dMM__carousel" aria-label="carroussel des image et vidéo du photographe">
-
+        <section id="dMM__carousel" tabindex="-1" class="focusable" role="dialog" aria-hidden="true" aria-describedby="titre" >
             <div class="dMM__controls">
                 <a href="#" class="dMM_controls-cdes focusable" aria-label="lien vers l'image ou video précédente"><img src="/assets/icons/chevron-left-solid.svg" alt="" id="previousMedia"></a>
             </div>

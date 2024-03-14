@@ -11,7 +11,7 @@ class FormatPicture {
     
     get mediaHtml(){
         const htmlElt = `
-        <img tabindex="0" src= "assets/photographers/${this._photographerId}/${this._image}">`
+        <img tabindex="0" src= "assets/photographers/${this._photographerId}/${this._image}" alt="${this._title}">`
         return htmlElt
     }
 
