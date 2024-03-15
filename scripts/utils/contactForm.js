@@ -32,3 +32,5 @@ function closeModal() {
     main.ariaHidden = false
     inertBackgroundModal().disable()
 }
+
+export {displayModal, closeModal}

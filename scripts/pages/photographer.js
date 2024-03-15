@@ -1,3 +1,8 @@
+import {dataPhotographerApi} from '../api/api.js'
+import {photographerTemplate, cardFolioTemplate, mediaInCarouselTemplate} from '../templates/photographer.js'
+import {displayModal,closeModal} from '../utils/contactForm.js'
+import {FormatPicture, FormatMovie, ContactForm} from '../models/media.js'
+
 function recoverIdFromPhotographer(){
     const urlStr=window.location.href
     const urlObj=new URL(urlStr)
@@ -153,7 +158,7 @@ function addOnlyOneLike (mediaById){
         mediaById[mediaId].likes++
         mediaById[mediaId].liked=true
         event.target.parentElement.children[0].innerText = String(mediaById[mediaId].likes)
-event.target.ariaLabel=`${mediaById[mediaId].likes} like, déjà ajouté               `
+        event.target.ariaLabel=`${mediaById[mediaId].likes} like, déjà ajouté               `
         
         displayTotalLike(mediaById)
     }
@@ -310,8 +315,12 @@ function closeCarouselModal(){
 
 function displayContactModal(photographerName){
     const contactTitle = document.getElementById('contactPhotographer')
-
+    const contactButton = document.querySelector('.contactButton')
+    const closeContact = document.querySelector('.closeContact')
     contactTitle.innerText = photographerName
+
+    contactButton.addEventListener('click',displayModal)
+    closeContact.addEventListener('click', closeModal)
 
     const layout = document.querySelector('.contact_modal')
     layout.addEventListener('click',(event)=>{

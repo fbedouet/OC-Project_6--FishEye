@@ -32,7 +32,7 @@ function photographerTemplate(data) {
                             class="contactButton"
                             aria-haspopup="dialog"
                             aria-controls="contactLayout"
-                            onclick="displayModal()">Contactez-moi
+                            >Contactez-moi
                         </button>
                         <div class="profil">
                             <img src=${picture} class="profil_img" alt="">
@@ -71,3 +71,5 @@ function mediaInCarouselTemplate(mediaObj){
     title.classList.add('dMM__mediaContents-title')
     carousel.appendChild(title)
 }
+
+export {photographerTemplate, cardFolioTemplate, mediaInCarouselTemplate}

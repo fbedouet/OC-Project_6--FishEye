@@ -84,3 +84,5 @@ class ContactForm {
         }
     }
 }
+
+export{FormatPicture, FormatMovie, ContactForm}

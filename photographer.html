@@ -4,11 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <link href="css/photographer.css" rel="stylesheet" type="text/css" />
-    <script src="scripts/api/api.js" defer></script>
-    <script src="scripts/templates/photographer.js" defer></script>
-    <script src="scripts/models/media.js" defer></script>
-    <script src="scripts/pages/photographer.js" defer></script>
-    <script src="scripts/utils/contactForm.js" defer></script>
+    <script type="module" src="scripts/pages/photographer.js" defer></script>
     <link rel="icon" type="image/png" href="assets/favicon.png">
     <script src="https://kit.fontawesome.com/1173bca6e6.js" crossorigin="anonymous"></script>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&display=swap" rel="stylesheet">
@@ -63,7 +59,7 @@
           <header>
             <h2 id="modalTitle">Contacter-moi</h2>
             <a href= "#" class="focusable closeContact">
-              <img src="assets/icons/close.svg" onclick="closeModal()" aria-label="Fermer la fenêtre" />
+              <img src="assets/icons/close.svg" aria-label="Fermer la fenêtre" />
             </a>
           </header>
           <h3 id="contactPhotographer"></h3>

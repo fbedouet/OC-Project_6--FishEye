@@ -1,0 +1,26 @@
+{
+  "name": "project-6__fisheye",
+  "version": "1.0.0",
+  "description": "#Project name: FishEye.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fbedouet/OC-Project_6--FishEye.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/fbedouet/OC-Project_6--FishEye/issues"
+  },
+  "homepage": "https://github.com/fbedouet/OC-Project_6--FishEye#readme",
+  "devDependencies": {
+    "eslint": "^8.57.0",
+    "eslint-config-standard": "^17.1.0",
+    "eslint-plugin-import": "^2.29.1",
+    "eslint-plugin-n": "^16.6.2",
+    "eslint-plugin-promise": "^6.1.1"
+  }
+}
