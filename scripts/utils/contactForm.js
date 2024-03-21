@@ -1,8 +1,24 @@
+const inertBackgroundModal = ()=>{
+    const main =document.querySelector('main')
+    const header =document.querySelector('header')
+
+    const enable=()=>{
+        main.inert=true
+        header.inert=true
+    }
+
+    const disable = ()=>{
+        main.inert=false
+        header.inert=false
+    }
+    return {enable, disable}
+}
+
 function displayModal() {
     const modal = document.getElementById('contactLayout')
     const header = document.getElementById('header')
     const main = document.getElementById('main')
-    const closeContact = document.querySelector('.closeContact')
+    const fristnameInput = document.getElementById('firstName')
     modal.ariaHidden = false
     header.ariaHidden = true
     main.ariaHidden = true
@@ -10,15 +26,13 @@ function displayModal() {
     inertBackgroundModal().enable()
 
     setTimeout(() => {
-        console.log(closeContact.focus())
-       }, 1000); 
+        fristnameInput.focus()
+    }, 100)
 
 
     modal.querySelector('.focusable').addEventListener('keydown',(event)=>{
         if (event.key === 'Enter'){
-            const contactBtn = document.querySelector('.contactButton')
             closeModal()
-            // contactBtn.focus()
         }
     })
 }
@@ -27,10 +41,14 @@ function closeModal() {
     const modal = document.getElementById('contactLayout')
     const header = document.getElementById('header')
     const main = document.getElementById('main')
+    const contactButton = document.querySelector('.contactButton')
     modal.ariaHidden = true
     header.ariaHidden = false
     main.ariaHidden = false
     inertBackgroundModal().disable()
+    setTimeout(() => {
+        contactButton.focus()
+    }, 100)
 }
 
-export {displayModal, closeModal}
+export {displayModal, closeModal, inertBackgroundModal}

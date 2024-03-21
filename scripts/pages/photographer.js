@@ -1,6 +1,6 @@
 import {dataPhotographerApi} from '../api/api.js'
 import {photographerTemplate, cardFolioTemplate, mediaInCarouselTemplate} from '../templates/photographer.js'
-import {displayModal,closeModal} from '../utils/contactForm.js'
+import {displayModal,closeModal, inertBackgroundModal} from '../utils/contactForm.js'
 import {FormatPicture, FormatMovie, ContactForm} from '../models/media.js'
 
 function recoverIdFromPhotographer(){
@@ -60,8 +60,21 @@ function sortByDropdownMenu (mediaById){
         const dropdownMenu = document.getElementById('dropDown__menu')
         const dropdownButton = document.getElementById('dropDown__button')
         dropdownMenu.ariaHidden=true
-        dropdownButton.focus()
-    } 
+        setTimeout(() => {
+            dropdownButton.focus()
+        }, 10)
+    }
+
+    //Close the menu by clicking outside the selection
+    const closeWhenEscape = (event)=>{
+        if (event.key==='Escape'){
+            closeDropdownMenu()
+            return
+        }
+        
+    }
+    document.addEventListener('keydown',closeWhenEscape)
+
     
     //Close the menu by clicking outside the selection
     const closeWhenClickedOutside = (event)=>{
@@ -101,7 +114,6 @@ function sortByDropdownMenu (mediaById){
         dropdownButton.ariaLabel=`media trié par ${selectedItem}`
         dropdownMenu.children[0].children[0].innerText=selectedItem
         dropdownMenu.children[0].children[0].ariaLabel=`trier par ${selectedItem}`
-        console.log(dropdownButton)
         closeDropdownMenu()
     }
     for (let cpt=0; cpt<dropdownMenuItems.length; cpt++){
@@ -158,7 +170,7 @@ function addOnlyOneLike (mediaById){
         mediaById[mediaId].likes++
         mediaById[mediaId].liked=true
         event.target.parentElement.children[0].innerText = String(mediaById[mediaId].likes)
-        event.target.ariaLabel=`${mediaById[mediaId].likes} like, déjà ajouté               `
+        event.target.ariaLabel=`${mediaById[mediaId].likes} like, like added`
         
         displayTotalLike(mediaById)
     }
@@ -170,27 +182,11 @@ function addOnlyOneLike (mediaById){
 
 }
 
-const inertBackgroundModal = ()=>{
-    const main =document.querySelector('main')
-    const header =document.querySelector('header')
-
-    const enable=()=>{
-        main.inert=true
-        header.inert=true
-    }
-
-    const disable = ()=>{
-        main.inert=false
-        header.inert=false
-    }
-    return {enable, disable}
-}
-
 const openModal = (mediaById, sortedIds, mediaId) => {
     //Display carousel with media selected
     const header = document.getElementById('header')
     const main = document.getElementById('main')
-    const dMM__carousel = document.getElementById('dMM__carousel')
+    const carousel = document.getElementById('dMM__carousel')
     const carouselModal = document.querySelector('.carouselLayout')
     const sortedMedias = sortedIds.map((id) => mediaById[id])
     const idSorted = sortedMedias.map(elt=>String(elt.id))
@@ -198,8 +194,10 @@ const openModal = (mediaById, sortedIds, mediaId) => {
     mediaInCarouselTemplate(callbackFactory)
     main.ariaHidden = true
     header.ariaHidden = true
-    dMM__carousel.ariaHidden = false
+    carouselModal.ariaHidden = false
     carouselModal.style.display='flex'
+    carouselModal.focus()
+    trapFocus(carousel)
 
     //Navigation in the carousel:
     const mediaInCarousel = document.querySelector('.dMM__mediaContents-img')
@@ -215,6 +213,8 @@ const openModal = (mediaById, sortedIds, mediaId) => {
         const idOfPreviousMedia = idSorted[indexPreviousMedia]
         const callbackFactory=createMedia(mediaById[idOfPreviousMedia])
         mediaInCarouselTemplate(callbackFactory)
+        carouselModal.focus()
+        trapFocus(carousel)
     }
     previousIcon.addEventListener('click',showPreviousmedia)
 
@@ -229,6 +229,8 @@ const openModal = (mediaById, sortedIds, mediaId) => {
         const idOfNextMedia = idSorted[indexNextMedia]
         const callbackFactory=createMedia(mediaById[idOfNextMedia])
         mediaInCarouselTemplate(callbackFactory)
+        carouselModal.focus()
+        trapFocus(carousel)
     }
     nextIcon.addEventListener('click',showNextMedia) //nextMedia
 
@@ -256,10 +258,10 @@ const openModal = (mediaById, sortedIds, mediaId) => {
                 case focusable[0]:
                     showPreviousmedia()
                     break
-                case focusable[1]:
+                case focusable[2]:
                     closeModal(event)
                     break
-                case focusable[2]:
+                case focusable[3]:
                     showNextMedia()
                     break
             }
@@ -284,7 +286,7 @@ const openModal = (mediaById, sortedIds, mediaId) => {
 
 function displayMediaInModal (mediaById, mediaSorted) {
     const mediaToShow = document.querySelectorAll('.fS__mediaCard-img')
-    const imgToShow = document.querySelectorAll('.fS__mediaCard-img')
+    // const imgToShow = document.querySelectorAll('.fS__mediaCard-img')
 
     for(let cpt=0; cpt<mediaToShow.length; cpt++){
         mediaToShow[cpt].addEventListener('click',(event)=>{
@@ -292,8 +294,8 @@ function displayMediaInModal (mediaById, mediaSorted) {
         })
     }
 
-    for (let cpt=0; cpt <imgToShow.length;cpt++){
-        imgToShow[cpt].addEventListener('keydown',(event)=>{
+    for (let cpt=0; cpt <mediaToShow.length;cpt++){
+        mediaToShow[cpt].addEventListener('keydown',(event)=>{
             if(event.key==='Enter'){
                 openModal(mediaById, mediaSorted, event.target.parentElement.id)
             } 
@@ -303,14 +305,14 @@ function displayMediaInModal (mediaById, mediaSorted) {
 
 function closeCarouselModal(){
     const carouselModal = document.querySelector('.carouselLayout')
-    const dMM__carousel = document.getElementById('dMM__carousel')
+    // const carousel = document.getElementById('dMM__carousel')
     const header = document.getElementById('header')
     const main = document.getElementById('main')
     carouselModal.style.display='none'
     inertBackgroundModal().disable()
     main.ariaHidden = false
     header.ariaHidden = false
-    dMM__carousel.ariaHidden = true
+    carouselModal.ariaHidden = true
 }
 
 function displayContactModal(photographerName){
@@ -344,8 +346,7 @@ function displayContactModal(photographerName){
     contactForm.addEventListener('submit',(event)=>{
         event.preventDefault()
         const formData = new ContactForm(form)
-        const inputHandlers = formData.inputEntries
-        console.log(inputHandlers)
+        console.log(formData.inputEntries)
         form.forEach(elt=>{
             elt.value = ''
         })
@@ -355,9 +356,14 @@ function displayContactModal(photographerName){
 
 const trapFocus = (domElt) => {
     const focusableElts = domElt.querySelectorAll('input, button, .focusable')
-    const firstFocusableElt = focusableElts[0]
-    const lastFocusableElt =  focusableElts[focusableElts.length-1]
-    focusableElts[1].focus()
+    const tmparray=Object.values(focusableElts).sort((a,b)=>{
+        return a.tabIndex - b.tabIndex
+    })
+    const firstFocusableElt = tmparray[0]
+    const lastFocusableElt =  tmparray[tmparray .length-1]
+
+        
+
     const trapFocusHandler = (event) => {
         if (event.key === 'Tab'){
             if(document.activeElement === lastFocusableElt && !event.shiftKey){
@@ -370,7 +376,7 @@ const trapFocus = (domElt) => {
             }
         }
     }
-    domElt.addEventListener('keydown', trapFocusHandler)   
+    domElt.addEventListener('keydown', trapFocusHandler)  
 }
 
 async function init(){ 
@@ -393,7 +399,7 @@ async function init(){
     sortByDropdownMenu(mediaById)
     displayTotalLike(mediaById)
     displayContactModal(photographer.name)
-    trapFocus(document.getElementById('dMM__carousel'))
+    // trapFocus(document.getElementById('dMM__carousel'))
     trapFocus(document.getElementById('contactLayout'))
     trapFocus(document.getElementById('dropDown__menu'))
 }

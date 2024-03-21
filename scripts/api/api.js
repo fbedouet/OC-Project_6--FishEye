@@ -1,5 +1,5 @@
 async function dataPhotographerApi() {
-    let dataJSON = await fetch("/data/photographers.json")
+    let dataJSON = await fetch('/data/photographers.json')
     dataJSON =  await dataJSON.json()
 
     function getAllId(){

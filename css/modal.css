@@ -11,6 +11,13 @@
     justify-content: center;
 }
 
+.ariaHidden{
+    width: 0;
+    height: 0;
+    overflow: hidden;
+    color:red;
+}
+
 .displayMediaModal{         /*alias dMM*/
     display: flex;
     justify-content: center;

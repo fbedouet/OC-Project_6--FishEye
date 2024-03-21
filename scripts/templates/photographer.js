@@ -35,7 +35,7 @@ function photographerTemplate(data) {
                             >Contactez-moi
                         </button>
                         <div class="profil">
-                            <img src=${picture} class="profil_img" alt="">
+                            <img src=${picture} class="profil_img" alt="${name}">
                         </div>
         `
         return identity
@@ -52,10 +52,10 @@ function cardFolioTemplate(mediaObj){
     const divComment = document.createElement('div')
     divComment.classList.add('fS__mediaCard-com')
     divComment.innerHTML = `
-                            <p>${mediaObj.mediaTitle}</p>
+                            <p aria-hidden="true">${mediaObj.mediaTitle}</p>
                             <span>
-                                <p>${mediaObj.Likes}</p>
-                                <i class="heart addLike" tabindex="0" aria-label="${mediaObj.Likes} like, valider pour ajouter un de plus"></i>
+                                <p aria-hidden="true">${mediaObj.Likes}</p>
+                                <i class="heart addLike" tabindex="0" aria-label="${mediaObj.Likes} like, validate to add like"></i>
                             </span>`
     article.appendChild(divComment)
     return article
@@ -66,6 +66,7 @@ function mediaInCarouselTemplate(mediaObj){
     mediaObj.controls = true
     carousel.id = mediaObj.mediaId
     carousel.innerHTML = mediaObj.mediaHtml
+    carousel.children[0].tabIndex=2
     const title = document.createElement('p')
     title.innerText = mediaObj.mediaTitle
     title.classList.add('dMM__mediaContents-title')

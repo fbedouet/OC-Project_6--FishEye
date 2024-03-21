@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -13,7 +13,7 @@
   <body>
 
     <header id="header" aria-hidden="false">
-      <a href="/index.html" aria-label="retour vers la page principale">
+      <a href="/index.html" aria-label="Fisheye page principale">
         <img src="assets/images/logo.png" class="logo" alt=""/>
       </a>
     </header>
@@ -21,17 +21,24 @@
     <main id="main" aria-hidden="false">
       <section class="photographHeader">
       </section>
+      <div class="stickyFooter">
+        <div class="likesPrice">
+          <span> <p id="photographerLikes"></p> <span class="heart blackHeart "></span> </span>
+          <p>300€/jour</p>
+        </div>
+      </div>
       <div class="sortBy">
-        <p class="dropbox_label">Trier par</p>
+        <p class="dropbox_label" aria-hidden="true">Trier par</p>
         <nav role="navigation" id="dropDown">
           <button 
             id="dropDown__button"
             type="button"
             aria-controls="dropDown__menu"
-            aria-haspopup="dialog"
+            aria-haspopup="listbox"
+            aria-expanded="false"
             aria-label="media trié par titre"> <div id="title__button" inert=""><span>Titre</span><span class="fa-solid fa-chevron-down"></span></div>
           </button>
-          <ul id="dropDown__menu" role="dialog" aria-hidden="true">
+          <ul tabindex="-1" id="dropDown__menu" role="listbox" arial-label="menu ouvert" aria-hidden="true">
               <li class="niv_0"><a href="#" class="focusable" aria-label="trier par titre">Titre</a><span class="fa-solid fa-chevron-up"></span></li>
               <li class="center"><a href="#" class="focusable" aria-label="trier par date">Date</a></li>
               <li class="ext"><a href="#" class="focusable" aria-label="trier par popularité">Popularité</a></li>
@@ -39,12 +46,7 @@
         </nav>
       </div>
 
-      <div class="stickyFooter">
-        <div class="likesPrice">
-          <span> <p id="photographerLikes"></p> <i class="heart blackHeart "></i> </span>
-          <p>300€/jour</p>
-        </div>
-      </div>
+
 
     </main>
 
@@ -53,13 +55,14 @@
       role ="dialog"
       aria-modal="true"
       aria-hidden="true"
+      aria-label="allo"
       tabindex="-1">
       <div class="contact_modal" role="document">
         <section class="modal">
           <header>
             <h2 id="modalTitle">Contacter-moi</h2>
-            <a href= "#" class="focusable closeContact">
-              <img src="assets/icons/close.svg" aria-label="Fermer la fenêtre" />
+            <a href= "#" class="focusable closeContact" role="button">
+              <img src="assets/icons/close.svg" alt="close icon" aria-label="Fermer la fenêtre" />
             </a>
           </header>
           <h3 id="contactPhotographer"></h3>
@@ -71,29 +74,33 @@
                 onsubmit=""
                 novalidate
           >
-              <label for="firstName">Prénom</label>
+          <label aria-hidden="true" for="firstName">Prénom</label>
               <input class="cF__input"
+                    aria-label="prénom"
                      type="text"      
                      id="firstName"
                      name="firstName"
               />
 
-              <label for="lastName">Nom</label>
+              <label aria-hidden="true" for="lastName">Nom</label>
               <input class="cF__input"
+              aria-label="nom"
                      type="text"
                      id="lastName"
                      name="lastName"
               />
 
-              <label for="email">Email</label>
+              <label aria-hidden="true" for="email">Email</label>
               <input class="cF__input"
+              aria-label="email"
                      type="email"
                      id="email"
                      name="email"
               />
 
-              <label for="message" class="cF__input--label">Votre message</label>
+              <label aria-hidden="true" for="message" class="cF__input--label">Votre message</label>
               <textarea class="cF__input cF__input--area"
+              aria-label="votre message"
                         id="message"
                         name="message"
               >
@@ -107,24 +114,35 @@
       </div>
     </div>
 
-    <div class="carouselLayout" tabindex="-1">
+    <div class="carouselLayout" 
+      tabindex="1"
+      role="dialog"
+      aria-hidden="true"
+      aria-describedby="ariaHidden">
       <div class="displayMediaModal"> <!--Alias dMM-->
-        <section id="dMM__carousel" tabindex="-1" class="focusable" role="dialog" aria-hidden="true" aria-describedby="titre" >
+        <section id="dMM__carousel" >
+          <h4 id="ariaHidden" class="ariaHidden" aria-hidden="true">image affiché en vue rapproché</h4>
             <div class="dMM__controls">
-                <a href="#" class="dMM_controls-cdes focusable" aria-label="lien vers l'image ou video précédente"><img src="/assets/icons/chevron-left-solid.svg" alt="" id="previousMedia"></a>
+                <a tabindex="3"vhref="#" class="dMM_controls-cdes focusable" role="button" aria-label="média précédente">
+                  <img src="/assets/icons/chevron-left-solid.svg" alt="previous media icon" id="previousMedia">
+                </a>
             </div>
             
             <div class="dMM__media">
               <div class="dMM__mediaContents">
                 <div class="dMM__mediaContents-img">
                 </div>
-                <p class="dMM__mediaContents-title"></p>
+                <p class="dMM__mediaContents-title" aria-hidden="true"></p>
               </div>
             </div>
             
             <div class="dMM__controls">
-              <a href="#" class="dMM_controls-close focusable" aria-label="bouton de fermeture du carroussel"><img src="/assets/icons/xmark-solid.svg" alt=""></a>
-              <a href="#" class="dMM_controls-cdes focusable" aria-label="lien vers l'image ou video suivante"><img src="/assets/icons/chevron-right-solid.svg" alt="" id="nextMedia"></a>
+              <a tabindex="5" href="#" class="dMM_controls-close focusable" role="button" aria-label="fermeture du carroussel">
+                <img src="/assets/icons/xmark-solid.svg" alt="close icon">
+              </a>
+              <a tabindex="4" href="#" class="dMM_controls-cdes focusable" role="button" aria-label="média suivant">
+                <img src="/assets/icons/chevron-right-solid.svg" alt="next media icon" id="nextMedia">
+              </a>
             </div>
             
         </section>

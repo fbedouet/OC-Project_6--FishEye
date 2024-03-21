@@ -11,7 +11,7 @@ class FormatPicture {
     
     get mediaHtml(){
         const htmlElt = `
-        <img tabindex="0" src= "assets/photographers/${this._photographerId}/${this._image}" alt="${this._title}">`
+        <img tabindex="0" class="focusable" src= "assets/photographers/${this._photographerId}/${this._image}" alt="${this._title}">`
         return htmlElt
     }
 
@@ -42,8 +42,8 @@ class FormatMovie {
     
     get mediaHtml(){
         const htmlElt = `
-        <video tabindex="0" ${this._hasControls ? 'controls' : ''}
-             src= "assets/photographers/${this._photographerId}/${this._video}">
+        <video tabindex="0" ${this._hasControls ? 'controls' : ''} alt="${this._title}" role="term" aria-label="${this._title}, vidéo" >
+             <source src= "assets/photographers/${this._photographerId}/${this._video}">
         </video>`
         return htmlElt
     }
