@@ -32,6 +32,7 @@ function photographerTemplate(data) {
                             class="contactButton"
                             aria-haspopup="dialog"
                             aria-controls="contactLayout"
+                            aria-label="Contact Mi"
                             >Contactez-moi
                         </button>
                         <div class="profil">

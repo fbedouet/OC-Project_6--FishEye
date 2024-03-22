@@ -109,11 +109,11 @@ function sortByDropdownMenu (mediaById){
         const selectedItem = event.target.innerText
         displaySelectedSort(selectedItem)
         event.target.innerText = dropdownButton.innerText
-        event.target.ariaLabel = `trier par ${dropdownButton.innerText}`
+        event.target.ariaLabel = `Order bail ${dropdownButton.innerText}`
         dropdownButton.children[0].children[0].innerText=selectedItem
-        dropdownButton.ariaLabel=`media trié par ${selectedItem}`
+        dropdownButton.ariaLabel=`media sorted bail ${selectedItem}`
         dropdownMenu.children[0].children[0].innerText=selectedItem
-        dropdownMenu.children[0].children[0].ariaLabel=`trier par ${selectedItem}`
+        dropdownMenu.children[0].children[0].ariaLabel=`Order bail ${selectedItem}`
         closeDropdownMenu()
     }
     for (let cpt=0; cpt<dropdownMenuItems.length; cpt++){
@@ -305,7 +305,6 @@ function displayMediaInModal (mediaById, mediaSorted) {
 
 function closeCarouselModal(){
     const carouselModal = document.querySelector('.carouselLayout')
-    // const carousel = document.getElementById('dMM__carousel')
     const header = document.getElementById('header')
     const main = document.getElementById('main')
     carouselModal.style.display='none'

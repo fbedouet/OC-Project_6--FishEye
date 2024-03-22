@@ -13,8 +13,8 @@
   <body>
 
     <header id="header" aria-hidden="false">
-      <a href="/index.html" aria-label="Fisheye page principale">
-        <img src="assets/images/logo.png" class="logo" alt=""/>
+      <a href="/index.html" aria-label="Fisheye Home page">
+        <img src="assets/images/logo.png" class="logo" alt="logo"/>
       </a>
     </header>
 
@@ -36,12 +36,12 @@
             aria-controls="dropDown__menu"
             aria-haspopup="listbox"
             aria-expanded="false"
-            aria-label="media trié par titre"> <div id="title__button" inert=""><span>Titre</span><span class="fa-solid fa-chevron-down"></span></div>
+            aria-label="media sorted by titre"> <div id="title__button" inert=""><span>Titre</span><span class="fa-solid fa-chevron-down"></span></div>
           </button>
           <ul tabindex="-1" id="dropDown__menu" role="listbox" arial-label="menu ouvert" aria-hidden="true">
-              <li class="niv_0"><a href="#" class="focusable" aria-label="trier par titre">Titre</a><span class="fa-solid fa-chevron-up"></span></li>
-              <li class="center"><a href="#" class="focusable" aria-label="trier par date">Date</a></li>
-              <li class="ext"><a href="#" class="focusable" aria-label="trier par popularité">Popularité</a></li>
+              <li class="niv_0"><a href="#" role="listitem" class="focusable" aria-label="Order by titre">Titre</a><span class="fa-solid fa-chevron-up"></span></li>
+              <li class="center"><a href="#" role="listitem" class="focusable" aria-label="Order by date">Date</a></li>
+              <li class="ext"><a href="#" role="listitem" class="focusable" aria-label="Order by popularité">Popularité</a></li>
           </ul>
         </nav>
       </div>
@@ -62,7 +62,7 @@
           <header>
             <h2 id="modalTitle">Contacter-moi</h2>
             <a href= "#" class="focusable closeContact" role="button">
-              <img src="assets/icons/close.svg" alt="close icon" aria-label="Fermer la fenêtre" />
+              <img src="assets/icons/close.svg" alt="close icon" aria-label="Close Contact form" />
             </a>
           </header>
           <h3 id="contactPhotographer"></h3>
@@ -76,7 +76,7 @@
           >
           <label aria-hidden="true" for="firstName">Prénom</label>
               <input class="cF__input"
-                    aria-label="prénom"
+                    aria-label="First name"
                      type="text"      
                      id="firstName"
                      name="firstName"
@@ -84,7 +84,7 @@
 
               <label aria-hidden="true" for="lastName">Nom</label>
               <input class="cF__input"
-              aria-label="nom"
+              aria-label="Last name"
                      type="text"
                      id="lastName"
                      name="lastName"
@@ -92,7 +92,7 @@
 
               <label aria-hidden="true" for="email">Email</label>
               <input class="cF__input"
-              aria-label="email"
+              aria-label="Email"
                      type="email"
                      id="email"
                      name="email"
@@ -100,13 +100,13 @@
 
               <label aria-hidden="true" for="message" class="cF__input--label">Votre message</label>
               <textarea class="cF__input cF__input--area"
-              aria-label="votre message"
+              aria-label="Your message"
                         id="message"
                         name="message"
               >
               </textarea>
             <div>
-              <button class="contactButton">Envoyer</button>
+              <button aria-label="Send" class="contactButton">Envoyer</button>
             </div>
           </form>
 
@@ -121,10 +121,10 @@
       aria-describedby="ariaHidden">
       <div class="displayMediaModal"> <!--Alias dMM-->
         <section id="dMM__carousel" >
-          <h4 id="ariaHidden" class="ariaHidden" aria-hidden="true">image affiché en vue rapproché</h4>
+          <h4 id="ariaHidden" class="ariaHidden" aria-hidden="true">image closeup view</h4>
             <div class="dMM__controls">
-                <a tabindex="3"vhref="#" class="dMM_controls-cdes focusable" role="button" aria-label="média précédente">
-                  <img src="/assets/icons/chevron-left-solid.svg" alt="previous media icon" id="previousMedia">
+                <a tabindex="3"vhref="#" class="dMM_controls-cdes focusable" role="link" aria-label="Previous image">
+                  <img src="/assets/icons/chevron-left-solid.svg" alt="privious media icon" id="previousMedia">
                 </a>
             </div>
             
@@ -137,10 +137,10 @@
             </div>
             
             <div class="dMM__controls">
-              <a tabindex="5" href="#" class="dMM_controls-close focusable" role="button" aria-label="fermeture du carroussel">
+              <a tabindex="5" href="#" class="dMM_controls-close focusable" role="link" aria-label="Close dialog">
                 <img src="/assets/icons/xmark-solid.svg" alt="close icon">
               </a>
-              <a tabindex="4" href="#" class="dMM_controls-cdes focusable" role="button" aria-label="média suivant">
+              <a tabindex="4" href="#" class="dMM_controls-cdes focusable" role="link" aria-label="Next image">
                 <img src="/assets/icons/chevron-right-solid.svg" alt="next media icon" id="nextMedia">
               </a>
             </div>
