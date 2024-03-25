@@ -1,4 +1,4 @@
-import {dataPhotographerApi} from '../api/api.js'
+import {getDataPhotographerApi} from '../api/api.js'
 import {photographerTemplate, cardFolioTemplate, mediaInCarouselTemplate} from '../templates/photographer.js'
 import {displayModal,closeModal, inertBackgroundModal} from '../utils/contactForm.js'
 import {FormatPicture, FormatMovie, ContactForm} from '../models/media.js'
@@ -6,7 +6,7 @@ import {FormatPicture, FormatMovie, ContactForm} from '../models/media.js'
 function recoverIdFromPhotographer(){
     const urlStr=window.location.href
     const urlObj=new URL(urlStr)
-    return urlObj.search.split('=')[1]
+    return Number(urlObj.search.split('=')[1])
 }
 
 function displayProfil(photographerData, htmlTag){
@@ -25,14 +25,14 @@ function displayPortfolio(mediaById, sortedIds){
     folioSection.classList.add('folioSection')
  
     sortedMedias.forEach(elt => {
-        const media=createMedia(elt)
+        const media=createMediaFactory(elt)
         const cardFolio= cardFolioTemplate(media)
         folioSection.appendChild(cardFolio)
     })
     photographerMain .appendChild(folioSection)
 }
 
-function createMedia(mediaData){
+function createMediaFactory(mediaData){
     if(mediaData.image){
         const picture = new FormatPicture(mediaData)
         return picture 
@@ -60,6 +60,8 @@ function sortByDropdownMenu (mediaById){
         const dropdownMenu = document.getElementById('dropDown__menu')
         const dropdownButton = document.getElementById('dropDown__button')
         dropdownMenu.ariaHidden=true
+
+        //Timer for focus acquisition by screen reader
         setTimeout(() => {
             dropdownButton.focus()
         }, 10)
@@ -105,6 +107,7 @@ function sortByDropdownMenu (mediaById){
         displayMediaInModal(mediaById, mediaSorted)
         addOnlyOneLike (mediaById)
     }
+
     const updateMenuItems = (event)=>{
         const selectedItem = event.target.innerText
         displaySelectedSort(selectedItem)
@@ -182,7 +185,7 @@ function addOnlyOneLike (mediaById){
 
 }
 
-const openModal = (mediaById, sortedIds, mediaId) => {
+const openCarouselModal = (mediaById, sortedIds, mediaId) => {
     //Display carousel with media selected
     const header = document.getElementById('header')
     const main = document.getElementById('main')
@@ -190,7 +193,7 @@ const openModal = (mediaById, sortedIds, mediaId) => {
     const carouselModal = document.querySelector('.carouselLayout')
     const sortedMedias = sortedIds.map((id) => mediaById[id])
     const idSorted = sortedMedias.map(elt=>String(elt.id))
-    const callbackFactory = createMedia(mediaById[mediaId])
+    const callbackFactory = createMediaFactory(mediaById[mediaId])
     mediaInCarouselTemplate(callbackFactory)
     main.ariaHidden = true
     header.ariaHidden = true
@@ -211,7 +214,7 @@ const openModal = (mediaById, sortedIds, mediaId) => {
             indexPreviousMedia=idSorted.length-1
         }
         const idOfPreviousMedia = idSorted[indexPreviousMedia]
-        const callbackFactory=createMedia(mediaById[idOfPreviousMedia])
+        const callbackFactory=createMediaFactory(mediaById[idOfPreviousMedia])
         mediaInCarouselTemplate(callbackFactory)
         carouselModal.focus()
         trapFocus(carousel)
@@ -227,7 +230,7 @@ const openModal = (mediaById, sortedIds, mediaId) => {
             indexNextMedia=0
         }
         const idOfNextMedia = idSorted[indexNextMedia]
-        const callbackFactory=createMedia(mediaById[idOfNextMedia])
+        const callbackFactory=createMediaFactory(mediaById[idOfNextMedia])
         mediaInCarouselTemplate(callbackFactory)
         carouselModal.focus()
         trapFocus(carousel)
@@ -286,18 +289,17 @@ const openModal = (mediaById, sortedIds, mediaId) => {
 
 function displayMediaInModal (mediaById, mediaSorted) {
     const mediaToShow = document.querySelectorAll('.fS__mediaCard-img')
-    // const imgToShow = document.querySelectorAll('.fS__mediaCard-img')
 
     for(let cpt=0; cpt<mediaToShow.length; cpt++){
         mediaToShow[cpt].addEventListener('click',(event)=>{
-            openModal(mediaById, mediaSorted, event.target.parentElement.id)
+            openCarouselModal(mediaById, mediaSorted, event.target.parentElement.id)
         })
     }
 
     for (let cpt=0; cpt <mediaToShow.length;cpt++){
         mediaToShow[cpt].addEventListener('keydown',(event)=>{
             if(event.key==='Enter'){
-                openModal(mediaById, mediaSorted, event.target.parentElement.id)
+                openCarouselModal(mediaById, mediaSorted, event.target.parentElement.id)
             } 
         })                      
     }
@@ -355,11 +357,11 @@ function displayContactModal(photographerName){
 
 const trapFocus = (domElt) => {
     const focusableElts = domElt.querySelectorAll('input, button, .focusable')
-    const tmparray=Object.values(focusableElts).sort((a,b)=>{
+    const focusableEltsSorted=Object.values(focusableElts).sort((a,b)=>{
         return a.tabIndex - b.tabIndex
     })
-    const firstFocusableElt = tmparray[0]
-    const lastFocusableElt =  tmparray[tmparray .length-1]
+    const firstFocusableElt = focusableEltsSorted[0]
+    const lastFocusableElt =  focusableEltsSorted[focusableEltsSorted .length-1]
 
         
 
@@ -379,7 +381,7 @@ const trapFocus = (domElt) => {
 }
 
 async function init(){ 
-    const photographers = await dataPhotographerApi()
+    const photographers = await getDataPhotographerApi()
     const idKey=recoverIdFromPhotographer()
     
     const photographer = photographers.getPhotographerById(idKey)

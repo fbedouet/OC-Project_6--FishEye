@@ -25,6 +25,7 @@ function displayModal() {
     modal.focus()
     inertBackgroundModal().enable()
 
+    //Timer for focus acquisition by screen reader
     setTimeout(() => {
         fristnameInput.focus()
     }, 100)
@@ -46,6 +47,8 @@ function closeModal() {
     header.ariaHidden = false
     main.ariaHidden = false
     inertBackgroundModal().disable()
+
+    //Timer for focus acquisition by screen reader
     setTimeout(() => {
         contactButton.focus()
     }, 100)

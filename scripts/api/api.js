@@ -1,4 +1,4 @@
-async function dataPhotographerApi() {
+async function getDataPhotographerApi() {
     let dataJSON = await fetch('/data/photographers.json')
     dataJSON =  await dataJSON.json()
 
@@ -8,16 +8,16 @@ async function dataPhotographerApi() {
     }
 
     function getPhotographerById(idKey){
-        const result = dataJSON.photographers.filter(elt => elt.id == idKey)
+        const result = dataJSON.photographers.filter(elt =>  elt.id === idKey)
         return result[0]
     }
 
     function getPhotographerMedia(IdKey){
-        const result = dataJSON.media.filter(elt => elt.photographerId == IdKey)
+        const result = dataJSON.media.filter(elt => elt.photographerId === IdKey)
         return result
     }
 
     return {getAllId, getPhotographerById, getPhotographerMedia }
 }
 
-export {dataPhotographerApi}
+export {getDataPhotographerApi}

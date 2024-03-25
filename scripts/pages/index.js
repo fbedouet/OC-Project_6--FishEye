@@ -1,8 +1,8 @@
-import {dataPhotographerApi} from '../api/api.js'
+import {getDataPhotographerApi} from '../api/api.js'
 import {photographerTemplate} from '../templates/photographer.js'
 
 async function init() {
-    const photographers = await dataPhotographerApi()
+    const photographers = await getDataPhotographerApi()
     const photographersSection = document.querySelector('.photographer_section')
     const allID = photographers.getAllId()
     allID.forEach( (elt) => {
